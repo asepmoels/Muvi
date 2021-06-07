@@ -27,7 +27,8 @@ class HomeTabViewController: UITabBarController {
   private func configureTabs() {
     let subViewControllers = [
       router.makeMoviesView(),
-      router.makeSearchView()
+      router.makeSearchView(),
+      router.makeAboutView()
     ]
 
     viewControllers = subViewControllers

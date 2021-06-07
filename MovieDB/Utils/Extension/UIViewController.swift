@@ -13,5 +13,8 @@ extension UIViewController {
     navigationController?.navigationBar.barTintColor = .mainBarColor
     navigationController?.navigationBar.shadowImage = UIImage()
     navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    navigationController?.navigationBar.titleTextAttributes = [
+      NSAttributedString.Key.foregroundColor: UIColor.white
+    ]
   }
 }

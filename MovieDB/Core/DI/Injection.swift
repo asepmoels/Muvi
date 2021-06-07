@@ -72,6 +72,10 @@ struct Injection {
     container.register(SearchMovieUseCase.self) { _ in
       SearchMovieInteractor(repository: Injection.shared.resolve())
     }
+
+    container.register(AboutViewController.self) { _ in
+      AboutViewController()
+    }
   }
 
   func resolve<T>() -> T {
