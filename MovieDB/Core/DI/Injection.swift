@@ -22,7 +22,23 @@ struct Injection {
     }
 
     container.register(MoviesViewController.self) { _ in
-      MoviesViewController()
+      MoviesViewController(presenter: Injection.shared.resolve())
+    }
+
+    container.register(MoviePresenter.self) { _ in
+      MoviePresenter(nowPlayingUseCase: Injection.shared.resolve())
+    }
+
+    container.register(NowPlayingUseCase.self) { _ in
+      NowPlayingInteractor(repository: Injection.shared.resolve())
+    }
+
+    container.register(MovieRepositoryProtocol.self) { _ in
+      MovieRepository(remoteDataSource: Injection.shared.resolve())
+    }
+
+    container.register(RemoteDataSourceProtocol.self) { _ in
+      RemoteDataSource()
     }
   }
 

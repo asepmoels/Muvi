@@ -6,10 +6,18 @@
 //
 
 import UIKit
+import RxSwift
+import SVProgressHUD
+import SnapKit
 
-class MoviesViewController: UICollectionViewController {
-  init() {
-    super.init(collectionViewLayout: UICollectionViewFlowLayout())
+class MoviesViewController: UIViewController {
+  private let disposeBag = DisposeBag()
+  private let presenter: MoviePresenter
+  private let tableView = UITableView()
+
+  init(presenter: MoviePresenter) {
+    self.presenter = presenter
+    super.init(nibName: nil, bundle: nil)
   }
 
   required init?(coder: NSCoder) {
@@ -19,6 +27,8 @@ class MoviesViewController: UICollectionViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureViews()
+    observePresenter()
+    presenter.getNowPlaying()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -32,32 +42,59 @@ class MoviesViewController: UICollectionViewController {
   }
 
   private func configureViews() {
-    collectionView.backgroundColor = .mainColor
-    collectionView.register(cellType: HomeBannerCell.self)
+    tableView.register(headerFooterViewType: MovieGenreHeaderView.self)
+    tableView.register(cellType: MovieListCell.self)
+    tableView.dataSource = self
+    tableView.delegate = self
+    tableView.backgroundColor = .mainColor
+    view.backgroundColor = .mainBarColor
+    view.addSubview(tableView)
+    tableView.snp.makeConstraints({ [weak self] maker in
+      guard let self = self else { return }
+      maker.leading.trailing.bottom.equalToSuperview()
+      maker.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+    })
+  }
+
+  private func observePresenter() {
+    presenter.isLoading.subscribe { (isLoading) in
+      isLoading ? SVProgressHUD.show() : SVProgressHUD.dismiss()
+    }.disposed(by: disposeBag)
+
+    presenter.nowPlayings.subscribe { [weak self] _ in
+      self?.tableView.reloadData()
+    }.disposed(by: disposeBag)
   }
 }
 
-extension MoviesViewController {
-  override func numberOfSections(in collectionView: UICollectionView) -> Int {
+extension MoviesViewController: UITableViewDataSource {
+  func numberOfSections(in tableView: UITableView) -> Int {
+    presenter.homeContents.count
+  }
+
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     1
   }
 
-  override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    1
-  }
-
-  override func collectionView(_ collectionView: UICollectionView,
-                               cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell: HomeBannerCell = collectionView.dequeueReusableCell(for: indexPath)
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell: MovieListCell = tableView.dequeueReusableCell(for: indexPath)
+    cell.items = presenter.nowPlayings.value
     return cell
   }
 }
 
-extension MoviesViewController: UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let width = collectionView.bounds.width
-    return CGSize(width: width, height: 3 / 4 * width)
+extension MoviesViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let header = tableView.dequeueReusableHeaderFooterView(MovieGenreHeaderView.self)
+    header?.titleLabel.text = presenter.homeContents[section].rawValue
+    return header
+  }
+
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    64
+  }
+
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    230
   }
 }

@@ -9,6 +9,12 @@ pod 'Moya', '~> 14.0'
 pod 'SwiftLint'
 pod 'Swinject'
 pod 'Reusable'
+pod 'RxSwift'
+pod 'ObjectMapper'
+pod 'SVProgressHUD'
+pod 'RxRelay'
+pod 'SnapKit'
+pod 'SDWebImage'
 
   # Pods for MovieDB
 
