@@ -60,6 +60,18 @@ struct Injection {
     container.register(RemoteDataSourceProtocol.self) { _ in
       RemoteDataSource()
     }
+
+    container.register(SearchViewController.self) { _ in
+      SearchViewController(presenter: Injection.shared.resolve())
+    }
+
+    container.register(SearchPresenter.self) { _ in
+      SearchPresenter(searchUseCase: Injection.shared.resolve())
+    }
+
+    container.register(SearchMovieUseCase.self) { _ in
+      SearchMovieInteractor(repository: Injection.shared.resolve())
+    }
   }
 
   func resolve<T>() -> T {

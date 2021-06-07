@@ -14,6 +14,7 @@ protocol RemoteDataSourceProtocol {
   func getTopRated() -> Observable<[Movie]>
   func getUpcoming() -> Observable<[Movie]>
   func getTrending() -> Observable<[Movie]>
+  func searchMovie(keyword: String) -> Observable<[Movie]>
 }
 
 struct RemoteDataSource: RemoteDataSourceProtocol {
@@ -44,6 +45,12 @@ struct RemoteDataSource: RemoteDataSourceProtocol {
   func getTrending() -> Observable<[Movie]> {
     NetworkService.shared
       .connect(api: .trending, responseType: MovieResponse.self)
+      .compactMap({ $0.results })
+  }
+
+  func searchMovie(keyword: String) -> Observable<[Movie]> {
+    NetworkService.shared
+      .connect(api: .search(query: keyword), responseType: MovieResponse.self)
       .compactMap({ $0.results })
   }
 }

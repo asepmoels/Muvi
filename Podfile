@@ -15,6 +15,7 @@ pod 'SVProgressHUD'
 pod 'RxRelay'
 pod 'SnapKit'
 pod 'SDWebImage'
+pod 'RxCocoa'
 
   # Pods for MovieDB
 

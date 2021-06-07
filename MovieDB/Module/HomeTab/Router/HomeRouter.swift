@@ -19,4 +19,11 @@ struct HomeRouter {
     moviesView.tabBarItem.imageInsets = UIEdgeInsets(top: 10, left: 0, bottom: -10, right: 0)
     return UINavigationController(rootViewController: moviesView)
   }
+
+  func makeSearchView() -> UIViewController {
+    let moviesView: SearchViewController = Injection.shared.resolve()
+    moviesView.tabBarItem.image = UIImage(named: "tab_search")
+    moviesView.tabBarItem.imageInsets = UIEdgeInsets(top: 10, left: 0, bottom: -10, right: 0)
+    return UINavigationController(rootViewController: moviesView)
+  }
 }

@@ -14,4 +14,5 @@ protocol MovieRepositoryProtocol {
   func getTopRated() -> Observable<[Movie]>
   func getUpcoming() -> Observable<[Movie]>
   func getTrending() -> Observable<[Movie]>
+  func searchMovie(keyword: String) -> Observable<[Movie]>
 }

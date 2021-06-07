@@ -34,4 +34,8 @@ struct MovieRepository: MovieRepositoryProtocol {
   func getTrending() -> Observable<[Movie]> {
     remoteDataSource.getTrending()
   }
+
+  func searchMovie(keyword: String) -> Observable<[Movie]> {
+    remoteDataSource.searchMovie(keyword: keyword)
+  }
 }

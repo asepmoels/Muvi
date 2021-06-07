@@ -26,7 +26,8 @@ class HomeTabViewController: UITabBarController {
 
   private func configureTabs() {
     let subViewControllers = [
-      router.makeMoviesView()
+      router.makeMoviesView(),
+      router.makeSearchView()
     ]
 
     viewControllers = subViewControllers
@@ -34,5 +35,6 @@ class HomeTabViewController: UITabBarController {
     tabBar.backgroundColor = .mainBarColor
     tabBar.backgroundImage = UIImage()
     tabBar.tintColor = .primaryYellow
+    tabBar.unselectedItemTintColor = .white
   }
 }

@@ -15,6 +15,7 @@ enum API {
   case topRated
   case upcoming
   case trending
+  case search(query: String)
 }
 
 extension API: TargetType {
@@ -34,11 +35,19 @@ extension API: TargetType {
       return "movie/upcoming"
     case .trending:
       return "trending/movie/day"
+    case .search:
+      return "search/movie"
     }
   }
 
   var task: Task {
-    let defaultParams = ["api_key": Config.movieDBApiKey]
+    var defaultParams = ["api_key": Config.movieDBApiKey]
+    switch self {
+    case .search(let query) where query.count > 0:
+      defaultParams["query"] = query
+    default:
+      break
+    }
     return .requestParameters(parameters: defaultParams, encoding: URLEncoding.queryString)
   }
 
