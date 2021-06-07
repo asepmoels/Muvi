@@ -23,7 +23,7 @@ protocol Movie {
   var adult: Bool? { get }
   var title: String? { get }
   var voteCount: Int? { get }
-  var backdropPath: String? { get }
+  var backdropURL: URL? { get }
   var originalLanguage: String? { get }
   var overview: String? { get }
   var popularity: Double? { get }

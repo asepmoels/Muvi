@@ -30,4 +30,8 @@ struct MovieRepository: MovieRepositoryProtocol {
   func getUpcoming() -> Observable<[Movie]> {
     remoteDataSource.getUpcoming()
   }
+
+  func getTrending() -> Observable<[Movie]> {
+    remoteDataSource.getTrending()
+  }
 }

@@ -13,7 +13,7 @@ import SnapKit
 class MoviesViewController: UIViewController {
   private let disposeBag = DisposeBag()
   private let presenter: MoviePresenter
-  private let tableView = UITableView()
+  private let tableView = UITableView(frame: CGRect.zero, style: .grouped)
 
   init(presenter: MoviePresenter) {
     self.presenter = presenter
@@ -28,7 +28,7 @@ class MoviesViewController: UIViewController {
     super.viewDidLoad()
     configureViews()
     observePresenter()
-    presenter.getNowPlaying()
+    presenter.getTrending()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +43,7 @@ class MoviesViewController: UIViewController {
 
   private func configureViews() {
     tableView.register(headerFooterViewType: MovieGenreHeaderView.self)
+    tableView.register(cellType: MoviesBannerCell.self)
     tableView.register(cellType: MovieListCell.self)
     tableView.dataSource = self
     tableView.delegate = self
@@ -59,6 +60,11 @@ class MoviesViewController: UIViewController {
   private func observePresenter() {
     presenter.isLoading.subscribe { (isLoading) in
       isLoading ? SVProgressHUD.show() : SVProgressHUD.dismiss()
+    }.disposed(by: disposeBag)
+
+    presenter.trendings.filter({ $0 != nil }).subscribe { [weak self] _ in
+      self?.tableView.reloadData()
+      self?.presenter.getNowPlaying()
     }.disposed(by: disposeBag)
 
     presenter.nowPlayings.filter({ $0 != nil }).subscribe { [weak self] _ in
@@ -92,6 +98,12 @@ extension MoviesViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    if presenter.homeContents[indexPath.section] == .banner {
+      let cell: MoviesBannerCell = tableView.dequeueReusableCell(for: indexPath)
+      cell.items = presenter.trendings.value
+      return cell
+    }
+
     let cell: MovieListCell = tableView.dequeueReusableCell(for: indexPath)
     switch presenter.homeContents[indexPath.section] {
     case .nowPlaying:
@@ -102,6 +114,8 @@ extension MoviesViewController: UITableViewDataSource {
       cell.items = presenter.topRateds.value
     case .upcoming:
       cell.items = presenter.upcomings.value
+    default:
+      break
     }
 
     return cell
@@ -116,10 +130,15 @@ extension MoviesViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    64
+    section == 0 ? 8 : 48
   }
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    230
+    let width = UIScreen.main.bounds.width
+    return indexPath.section == 0 ? ceil(281 / 500 * width) : 230
+  }
+
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    0.01
   }
 }

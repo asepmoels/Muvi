@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="BannerCell" customModule="MovieDB" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="267" height="171"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="267" height="171"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mIU-J3-JBC">
+                        <rect key="frame" x="0.0" y="0.0" width="267" height="171"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bgo-ri-QsY">
+                        <rect key="frame" x="30" y="125" width="207" height="26"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                        <color key="shadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <size key="shadowOffset" width="2" height="2"/>
+                    </label>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Bgo-ri-QsY" secondAttribute="bottom" constant="20" id="1rg-Pq-f1w"/>
+                <constraint firstAttribute="trailing" secondItem="Bgo-ri-QsY" secondAttribute="trailing" constant="30" id="HDm-f7-kuR"/>
+                <constraint firstItem="mIU-J3-JBC" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="KWa-aF-Qc5"/>
+                <constraint firstItem="mIU-J3-JBC" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="asv-d3-Jx7"/>
+                <constraint firstAttribute="trailing" secondItem="mIU-J3-JBC" secondAttribute="trailing" id="jXU-C2-fqM"/>
+                <constraint firstAttribute="bottom" secondItem="mIU-J3-JBC" secondAttribute="bottom" id="nYk-ay-PSj"/>
+                <constraint firstItem="Bgo-ri-QsY" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="30" id="pRc-uR-1JU"/>
+            </constraints>
+            <size key="customSize" width="267" height="171"/>
+            <connections>
+                <outlet property="imageView" destination="mIU-J3-JBC" id="OGy-Mm-M1f"/>
+                <outlet property="titleLabel" destination="Bgo-ri-QsY" id="OgI-GI-2O6"/>
+            </connections>
+            <point key="canvasLocation" x="-192.0289855072464" y="10.379464285714285"/>
+        </collectionViewCell>
+    </objects>
+</document>

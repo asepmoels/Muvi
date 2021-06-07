@@ -14,6 +14,7 @@ enum API {
   case popular
   case topRated
   case upcoming
+  case trending
 }
 
 extension API: TargetType {
@@ -31,6 +32,8 @@ extension API: TargetType {
       return "movie/top_rated"
     case .upcoming:
       return "movie/upcoming"
+    case .trending:
+      return "trending/movie/day"
     }
   }
 

@@ -10,6 +10,7 @@ import RxRelay
 import RxSwift
 
 enum HomeContent: String, CaseIterable {
+  case banner
   case nowPlaying = "Now Playing"
   case topRated = "Top Rated"
   case popular = "Popular"
@@ -21,7 +22,8 @@ class MoviePresenter {
   private let nowPlayingUseCase: NowPlayingUseCase
   private let popularUseCase: PopularUseCase
   private let topRatedUseCase: TopRatedUseCase
-  private let  upcomingUseCase: UpcomingUseCase
+  private let upcomingUseCase: UpcomingUseCase
+  private let trendingUseCase: TrendingUseCase
 
   let isLoading: BehaviorRelay<Bool> = BehaviorRelay.init(value: false)
   let error: BehaviorRelay<ApiError?> = BehaviorRelay.init(value: nil)
@@ -29,16 +31,19 @@ class MoviePresenter {
   let populars: BehaviorRelay<[Movie]?> = BehaviorRelay.init(value: nil)
   let topRateds: BehaviorRelay<[Movie]?> = BehaviorRelay.init(value: nil)
   let upcomings: BehaviorRelay<[Movie]?> = BehaviorRelay.init(value: nil)
+  let trendings: BehaviorRelay<[Movie]?> = BehaviorRelay.init(value: nil)
   let homeContents = HomeContent.allCases
 
   init(nowPlayingUseCase: NowPlayingUseCase,
        popularUseCase: PopularUseCase,
        topRatedUseCase: TopRatedUseCase,
-       upcomingUseCase: UpcomingUseCase) {
+       upcomingUseCase: UpcomingUseCase,
+       trendingUseCase: TrendingUseCase) {
     self.nowPlayingUseCase = nowPlayingUseCase
     self.popularUseCase = popularUseCase
     self.topRatedUseCase = topRatedUseCase
     self.upcomingUseCase = upcomingUseCase
+    self.trendingUseCase = trendingUseCase
   }
 
   func getNowPlaying() {
@@ -85,6 +90,19 @@ class MoviePresenter {
 
     upcomingUseCase.getUpcoming().subscribe { [weak self] (genre) in
       self?.upcomings.accept(genre)
+    } onError: { [weak self] (error) in
+      self?.error.accept(error as? ApiError)
+      self?.isLoading.accept(false)
+    } onCompleted: { [weak self] in
+      self?.isLoading.accept(false)
+    }.disposed(by: disposeBag)
+  }
+
+  func getTrending() {
+    isLoading.accept(true)
+
+    trendingUseCase.getTrending().subscribe { [weak self] (genre) in
+      self?.trendings.accept(genre)
     } onError: { [weak self] (error) in
       self?.error.accept(error as? ApiError)
       self?.isLoading.accept(false)

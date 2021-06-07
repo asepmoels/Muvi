@@ -36,6 +36,7 @@ class MovieListCell: UITableViewCell, Reusable {
       layout.itemSize = CGSize(width: 120, height: 230)
       layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
       layout.minimumInteritemSpacing = 6.5
+      layout.minimumLineSpacing = 6.5
     }
     contentView.addSubview(collectionView)
     collectionView.backgroundColor = .clear

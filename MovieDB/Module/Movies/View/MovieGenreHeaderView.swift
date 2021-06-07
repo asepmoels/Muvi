@@ -23,14 +23,15 @@ class MovieGenreHeaderView: UITableViewHeaderFooterView, Reusable {
 
   private func configureViews() {
     let clearView = UIView()
-    clearView.backgroundColor = .clear
+    clearView.backgroundColor = .mainColor
     backgroundView = clearView
     titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
     titleLabel.textColor = .white
     addSubview(titleLabel)
     titleLabel.snp.makeConstraints { (maker) in
       maker.leading.trailing.equalTo(20)
-      maker.top.equalTo(32)
+      maker.top.equalTo(16)
     }
+    clipsToBounds = true
   }
 }

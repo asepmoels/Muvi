@@ -29,7 +29,8 @@ struct Injection {
       MoviePresenter(nowPlayingUseCase: Injection.shared.resolve(),
                      popularUseCase: Injection.shared.resolve(),
                      topRatedUseCase: Injection.shared.resolve(),
-                     upcomingUseCase: Injection.shared.resolve())
+                     upcomingUseCase: Injection.shared.resolve(),
+                     trendingUseCase: Injection.shared.resolve())
     }
 
     container.register(NowPlayingUseCase.self) { _ in
@@ -46,6 +47,10 @@ struct Injection {
 
     container.register(UpcomingUseCase.self) { _ in
       UpcomingInteractor(repository: Injection.shared.resolve())
+    }
+
+    container.register(TrendingUseCase.self) { _ in
+      TrendingInteractor(repository: Injection.shared.resolve())
     }
 
     container.register(MovieRepositoryProtocol.self) { _ in

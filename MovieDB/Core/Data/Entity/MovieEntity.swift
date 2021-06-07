@@ -41,7 +41,7 @@ struct MovieEntity: Movie, Mappable {
   var video: Bool?
   var adult: Bool?
   var originalTitle: String?
-  var backdropPath: String?
+  var backdropURL: URL?
   var homepage: String?
   var originalLanguage: String?
   var runtime: Int?
@@ -72,7 +72,7 @@ struct MovieEntity: Movie, Mappable {
     video <- map["video"]
     adult <- map["adult"]
     originalTitle <- map["original_title"]
-    backdropPath <- map["backdrop_path"]
+    backdropURL <- (map["backdrop_path"], ImageURLTransform())
     homepage <- map["homepage"]
     originalLanguage <- map["original_language"]
     runtime <- map["runtime"]

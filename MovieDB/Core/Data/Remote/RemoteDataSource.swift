@@ -13,6 +13,7 @@ protocol RemoteDataSourceProtocol {
   func getPopular() -> Observable<[Movie]>
   func getTopRated() -> Observable<[Movie]>
   func getUpcoming() -> Observable<[Movie]>
+  func getTrending() -> Observable<[Movie]>
 }
 
 struct RemoteDataSource: RemoteDataSourceProtocol {
@@ -37,6 +38,12 @@ struct RemoteDataSource: RemoteDataSourceProtocol {
   func getUpcoming() -> Observable<[Movie]> {
     NetworkService.shared
       .connect(api: .upcoming, responseType: MovieResponse.self)
+      .compactMap({ $0.results })
+  }
+
+  func getTrending() -> Observable<[Movie]> {
+    NetworkService.shared
+      .connect(api: .trending, responseType: MovieResponse.self)
       .compactMap({ $0.results })
   }
 }
