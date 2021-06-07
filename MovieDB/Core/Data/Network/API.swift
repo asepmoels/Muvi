@@ -11,6 +11,9 @@ import Alamofire
 
 enum API {
   case nowPlaying
+  case popular
+  case topRated
+  case upcoming
 }
 
 extension API: TargetType {
@@ -22,15 +25,17 @@ extension API: TargetType {
     switch self {
     case .nowPlaying:
       return "movie/now_playing"
+    case .popular:
+      return "movie/popular"
+    case .topRated:
+      return "movie/top_rated"
+    case .upcoming:
+      return "movie/upcoming"
     }
   }
 
   var task: Task {
     let defaultParams = ["api_key": Config.movieDBApiKey]
-    switch self {
-    default:
-      break
-    }
     return .requestParameters(parameters: defaultParams, encoding: URLEncoding.queryString)
   }
 

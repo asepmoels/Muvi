@@ -61,7 +61,22 @@ class MoviesViewController: UIViewController {
       isLoading ? SVProgressHUD.show() : SVProgressHUD.dismiss()
     }.disposed(by: disposeBag)
 
-    presenter.nowPlayings.subscribe { [weak self] _ in
+    presenter.nowPlayings.filter({ $0 != nil }).subscribe { [weak self] _ in
+      self?.tableView.reloadData()
+      self?.presenter.getPopular()
+    }.disposed(by: disposeBag)
+
+    presenter.populars.filter({ $0 != nil }).subscribe { [weak self] _ in
+      self?.tableView.reloadData()
+      self?.presenter.getTopRated()
+    }.disposed(by: disposeBag)
+
+    presenter.topRateds.filter({ $0 != nil }).subscribe { [weak self] _ in
+      self?.tableView.reloadData()
+      self?.presenter.getUpcoming()
+    }.disposed(by: disposeBag)
+
+    presenter.upcomings.subscribe { [weak self] _ in
       self?.tableView.reloadData()
     }.disposed(by: disposeBag)
   }
@@ -78,7 +93,17 @@ extension MoviesViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: MovieListCell = tableView.dequeueReusableCell(for: indexPath)
-    cell.items = presenter.nowPlayings.value
+    switch presenter.homeContents[indexPath.section] {
+    case .nowPlaying:
+      cell.items = presenter.nowPlayings.value
+    case .popular:
+      cell.items = presenter.populars.value
+    case .topRated:
+      cell.items = presenter.topRateds.value
+    case .upcoming:
+      cell.items = presenter.upcomings.value
+    }
+
     return cell
   }
 }

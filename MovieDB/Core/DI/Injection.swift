@@ -26,11 +26,26 @@ struct Injection {
     }
 
     container.register(MoviePresenter.self) { _ in
-      MoviePresenter(nowPlayingUseCase: Injection.shared.resolve())
+      MoviePresenter(nowPlayingUseCase: Injection.shared.resolve(),
+                     popularUseCase: Injection.shared.resolve(),
+                     topRatedUseCase: Injection.shared.resolve(),
+                     upcomingUseCase: Injection.shared.resolve())
     }
 
     container.register(NowPlayingUseCase.self) { _ in
       NowPlayingInteractor(repository: Injection.shared.resolve())
+    }
+
+    container.register(PopularUseCase.self) { _ in
+      PopularInteractor(repository: Injection.shared.resolve())
+    }
+
+    container.register(TopRatedUseCase.self) { _ in
+      TopRatedInteractor(repository: Injection.shared.resolve())
+    }
+
+    container.register(UpcomingUseCase.self) { _ in
+      UpcomingInteractor(repository: Injection.shared.resolve())
     }
 
     container.register(MovieRepositoryProtocol.self) { _ in

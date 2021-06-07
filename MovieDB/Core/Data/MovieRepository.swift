@@ -18,4 +18,16 @@ struct MovieRepository: MovieRepositoryProtocol {
   func getNowPlaying() -> Observable<[Movie]> {
     remoteDataSource.getNowPlaying()
   }
+
+  func getPopular() -> Observable<[Movie]> {
+    remoteDataSource.getPopular()
+  }
+
+  func getTopRated() -> Observable<[Movie]> {
+    remoteDataSource.getTopRated()
+  }
+
+  func getUpcoming() -> Observable<[Movie]> {
+    remoteDataSource.getUpcoming()
+  }
 }

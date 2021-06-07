@@ -29,6 +29,7 @@ class MovieItemCell: UICollectionViewCell, NibReusable {
     genreLabel.text = item?.originalLanguage
     titleLabel.text = item?.title
     actorLabel.text = item?.overview
+    posterImageView.sd_imageIndicator = SDWebImageActivityIndicator.white
     posterImageView.sd_setImage(with: item?.posterURL)
   }
 }

@@ -10,4 +10,7 @@ import RxSwift
 
 protocol MovieRepositoryProtocol {
   func getNowPlaying() -> Observable<[Movie]>
+  func getPopular() -> Observable<[Movie]>
+  func getTopRated() -> Observable<[Movie]>
+  func getUpcoming() -> Observable<[Movie]>
 }
