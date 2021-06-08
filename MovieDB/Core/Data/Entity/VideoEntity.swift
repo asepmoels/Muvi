@@ -17,7 +17,7 @@ struct VideoEntity: Video, Mappable {
   init?(map: Map) {
     mapping(map: map)
   }
-  
+
   mutating func mapping(map: Map) {
     type <- map["type"]
     identifier <- map["id"]

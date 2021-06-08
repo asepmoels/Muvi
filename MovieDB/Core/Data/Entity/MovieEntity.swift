@@ -30,25 +30,25 @@ class MovieResponse: Mappable {
 
 class MovieEntity: Object, Movie, Mappable {
   @objc dynamic var identifier: Int = 0
-  dynamic var revenue: Int = 0
-  dynamic var popularity: Double = 0
-  dynamic var overview: String = ""
-  dynamic var releaseDate: String = ""
-  dynamic var budget: Int = 0
-  dynamic var voteAverage: Double = 0
-  dynamic var status: String = ""
-  dynamic var title: String = ""
-  dynamic var video: Bool = false
-  dynamic var adult: Bool = false
-  dynamic var originalTitle: String = ""
-  dynamic var homepage: String = ""
-  dynamic var originalLanguage: String = ""
-  dynamic var runtime: Int = 0
-  dynamic var voteCount: Int = 0
-  dynamic var imdbId: String = ""
-  dynamic var tagline: String = ""
-  dynamic var backdropURLString: String = ""
-  dynamic var posterURLString: String = ""
+  @objc dynamic var revenue: Int = 0
+  @objc dynamic var popularity: Double = 0
+  @objc dynamic var overview: String = ""
+  @objc dynamic var releaseDate: String = ""
+  @objc dynamic var budget: Int = 0
+  @objc dynamic var voteAverage: Double = 0
+  @objc dynamic var status: String = ""
+  @objc dynamic var title: String = ""
+  @objc dynamic var video: Bool = false
+  @objc dynamic var adult: Bool = false
+  @objc dynamic var originalTitle: String = ""
+  @objc dynamic var homepage: String = ""
+  @objc dynamic var originalLanguage: String = ""
+  @objc dynamic var runtime: Int = 0
+  @objc dynamic var voteCount: Int = 0
+  @objc dynamic var imdbId: String = ""
+  @objc dynamic var tagline: String = ""
+  @objc dynamic var backdropURLString: String = ""
+  @objc dynamic var posterURLString: String = ""
   var isFavorite: Bool = false
 
   dynamic private var dataGenres: List<GenreEntity> = List()
@@ -63,8 +63,12 @@ class MovieEntity: Object, Movie, Mappable {
   var videos: [Video]? {
     dataVideos?.map({ $0 })
   }
-  var backdropURL: URL?
-  var posterURL: URL?
+  var backdropURL: URL? {
+    ImageURLTransform().transformFromJSON(backdropURLString)
+  }
+  var posterURL: URL? {
+    ImageURLTransform().transformFromJSON(posterURLString)
+  }
 
   override class func primaryKey() -> String? {
     "identifier"
@@ -88,7 +92,6 @@ class MovieEntity: Object, Movie, Mappable {
     popularity <- map["popularity"]
     overview <- map["overview"]
     posterURLString <- map["poster_path"]
-    posterURL <- (map["poster_path"], ImageURLTransform())
     releaseDate <- map["release_date"]
     budget <- map["budget"]
     voteAverage <- map["vote_average"]
@@ -99,7 +102,6 @@ class MovieEntity: Object, Movie, Mappable {
     video <- map["video"]
     adult <- map["adult"]
     originalTitle <- map["original_title"]
-    backdropURL <- (map["backdrop_path"], ImageURLTransform())
     backdropURLString <- map["backdrop_path"]
     homepage <- map["homepage"]
     originalLanguage <- map["original_language"]

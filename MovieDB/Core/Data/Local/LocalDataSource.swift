@@ -60,19 +60,25 @@ struct LocalDataSource: LocalDataSourceProtocol {
   }
 
   func getFavorites(keyword: String) -> Observable<[Movie]> {
-    let result = PublishSubject<[Movie]>.init()
+    let result = ReplaySubject<[Movie]>.createUnbounded()
     if let realm = realm {
       let all = realm.objects(MovieEntity.self)
         .sorted(byKeyPath: "title")
       var movies = [MovieEntity]()
       all.forEach { (movie) in
-        movies.append(movie)
+        if (!keyword.isEmpty &&
+              movie.title.lowercased().contains(keyword.lowercased())) ||
+            keyword.isEmpty {
+          movies.append(movie)
+        }
       }
       result.onNext(movies)
+      result.onCompleted()
     } else {
       result.onNext([])
+      result.onCompleted()
     }
-    return result.asObservable()
+    return result
   }
 
   private func savedMovie(with movieId: Int) -> MovieEntity? {

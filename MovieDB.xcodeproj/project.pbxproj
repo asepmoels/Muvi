@@ -67,6 +67,10 @@
 		9E3F8739266F72C3001B8AEE /* VideoEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F8738266F72C3001B8AEE /* VideoEntity.swift */; };
 		9E3F873E266F759E001B8AEE /* CastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F873D266F759E001B8AEE /* CastCell.swift */; };
 		9E3F876F266F7CB7001B8AEE /* YoutubePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F876E266F7CB6001B8AEE /* YoutubePlayerViewController.swift */; };
+		9E3F8774266FAEE6001B8AEE /* FavoritePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F8773266FAEE5001B8AEE /* FavoritePresenter.swift */; };
+		9E3F8779266FB319001B8AEE /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F8778266FB319001B8AEE /* FavoriteViewController.swift */; };
+		9E3F877F266FB535001B8AEE /* FavoriteMovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F877D266FB535001B8AEE /* FavoriteMovieCell.swift */; };
+		9E3F8780266FB535001B8AEE /* FavoriteMovieCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E3F877E266FB535001B8AEE /* FavoriteMovieCell.xib */; };
 		A7F7B5D7B3366301CE4BB204 /* Pods_MovieDBTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF40B503A053E857E6830709 /* Pods_MovieDBTests.framework */; };
 		E056F4CF9290DC04AE190EA4 /* Pods_MovieDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C8A2F0893088A1A810EC2D1 /* Pods_MovieDB.framework */; };
 /* End PBXBuildFile section */
@@ -158,6 +162,10 @@
 		9E3F8738266F72C3001B8AEE /* VideoEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEntity.swift; sourceTree = "<group>"; };
 		9E3F873D266F759E001B8AEE /* CastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastCell.swift; sourceTree = "<group>"; };
 		9E3F876E266F7CB6001B8AEE /* YoutubePlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubePlayerViewController.swift; sourceTree = "<group>"; };
+		9E3F8773266FAEE5001B8AEE /* FavoritePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePresenter.swift; sourceTree = "<group>"; };
+		9E3F8778266FB319001B8AEE /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
+		9E3F877D266FB535001B8AEE /* FavoriteMovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMovieCell.swift; sourceTree = "<group>"; };
+		9E3F877E266FB535001B8AEE /* FavoriteMovieCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoriteMovieCell.xib; sourceTree = "<group>"; };
 		9E925DE4256490A895F4413E /* Pods-MovieDB.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieDB.debug.xcconfig"; path = "Target Support Files/Pods-MovieDB/Pods-MovieDB.debug.xcconfig"; sourceTree = "<group>"; };
 		AF40B503A053E857E6830709 /* Pods_MovieDBTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieDBTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA2885E8D129572D25D15389 /* Pods-MovieDB-MovieDBUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieDB-MovieDBUITests.release.xcconfig"; path = "Target Support Files/Pods-MovieDB-MovieDBUITests/Pods-MovieDB-MovieDBUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -396,7 +404,6 @@
 			isa = PBXGroup;
 			children = (
 				9E3F84BD266DCA1B001B8AEE /* Presenter */,
-				9E3F84BE266DCA1B001B8AEE /* Router */,
 				9E3F84BC266DCA1B001B8AEE /* View */,
 			);
 			path = Favorite;
@@ -515,6 +522,9 @@
 		9E3F84BC266DCA1B001B8AEE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				9E3F8778266FB319001B8AEE /* FavoriteViewController.swift */,
+				9E3F877D266FB535001B8AEE /* FavoriteMovieCell.swift */,
+				9E3F877E266FB535001B8AEE /* FavoriteMovieCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -522,15 +532,9 @@
 		9E3F84BD266DCA1B001B8AEE /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				9E3F8773266FAEE5001B8AEE /* FavoritePresenter.swift */,
 			);
 			path = Presenter;
-			sourceTree = "<group>";
-		};
-		9E3F84BE266DCA1B001B8AEE /* Router */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Router;
 			sourceTree = "<group>";
 		};
 		9E3F84BF266DCA25001B8AEE /* View */ = {
@@ -721,6 +725,7 @@
 				9E3F8449266DBB56001B8AEE /* LaunchScreen.storyboard in Resources */,
 				9E3F863D266E33C5001B8AEE /* BannerCell.xib in Resources */,
 				9E3F86EE266EFA95001B8AEE /* DetailMovieViewController.xib in Resources */,
+				9E3F8780266FB535001B8AEE /* FavoriteMovieCell.xib in Resources */,
 				9E3F85FB266E1A83001B8AEE /* MovieItemCell.xib in Resources */,
 				9E3F8446266DBB56001B8AEE /* Assets.xcassets in Resources */,
 				9E3F8694266E6670001B8AEE /* AboutViewController.xib in Resources */,
@@ -903,6 +908,7 @@
 				9E3F84D0266DCD42001B8AEE /* Injection.swift in Sources */,
 				9E3F85A2266E083E001B8AEE /* MovieGenreHeaderView.swift in Sources */,
 				9E3F8629266E29EE001B8AEE /* UpcomingInteractor.swift in Sources */,
+				9E3F8779266FB319001B8AEE /* FavoriteViewController.swift in Sources */,
 				9E3F873E266F759E001B8AEE /* CastCell.swift in Sources */,
 				9E3F85B7266E113A001B8AEE /* NowPlayingInteractor.swift in Sources */,
 				9E3F872F266F716D001B8AEE /* Video.swift in Sources */,
@@ -914,11 +920,13 @@
 				9E3F869F266EE67D001B8AEE /* AddFavoriteInteractor.swift in Sources */,
 				9E3F848F266DBEB9001B8AEE /* HomeRouter.swift in Sources */,
 				9E3F8693266E6670001B8AEE /* AboutViewController.swift in Sources */,
+				9E3F877F266FB535001B8AEE /* FavoriteMovieCell.swift in Sources */,
 				9E3F86F3266EFB60001B8AEE /* DetailMovieRouter.swift in Sources */,
 				9E3F8617266E2035001B8AEE /* ImageURLTransform.swift in Sources */,
 				9E3F8556266DF909001B8AEE /* MoviePresenter.swift in Sources */,
 				9E3F862E266E311E001B8AEE /* TrendingInteractor.swift in Sources */,
 				9E3F85CA266E122D001B8AEE /* GenreEntity.swift in Sources */,
+				9E3F8774266FAEE6001B8AEE /* FavoritePresenter.swift in Sources */,
 				9E3F8487266DBDAC001B8AEE /* HomeTabViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

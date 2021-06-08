@@ -99,7 +99,8 @@ struct Injection {
 
   private func registerDetailFeature() {
     container.register(DetailMovieViewController.self) { _ in
-      DetailMovieViewController(presenter: Injection.shared.resolve())
+      DetailMovieViewController(router: Injection.shared.resolve(),
+                                presenter: Injection.shared.resolve())
     }
     container.register(DetailMoviePresenter.self) { _ in
       DetailMoviePresenter(detailUseCase: Injection.shared.resolve(),
@@ -111,6 +112,9 @@ struct Injection {
     }
     container.register(DetailMovieUseCase.self) { _ in
       DetailMovieInteractor(repository: Injection.shared.resolve())
+    }
+    container.register(YoutubePlayerViewController.self) { _, videoId in
+      YoutubePlayerViewController(videoId: videoId)
     }
   }
 
@@ -124,10 +128,26 @@ struct Injection {
     container.register(FavoriteMovieUseCase.self) { _ in
       FavoriteMovieInteractor(repository: Injection.shared.resolve())
     }
+    container.register(FavoriteViewController.self) { _ in
+      FavoriteViewController(router: Injection.shared.resolve(),
+                             presenter: Injection.shared.resolve())
+    }
+    container.register(FavoritePresenter.self) { _ in
+      FavoritePresenter(favoriteUseCase: Injection.shared.resolve(),
+                        addFavoriteUseCase: Injection.shared.resolve(),
+                        removeFavoriteUseCase: Injection.shared.resolve())
+    }
   }
 
   func resolve<T>() -> T {
     guard let result = container.resolve(T.self) else {
+      fatalError("This type is not registered: \(T.self)")
+    }
+    return result
+  }
+
+  func resolve<T, A>(argument: A) -> T {
+    guard let result = container.resolve(T.self, argument: argument) else {
       fatalError("This type is not registered: \(T.self)")
     }
     return result

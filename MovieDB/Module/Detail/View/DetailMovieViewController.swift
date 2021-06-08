@@ -13,6 +13,7 @@ import SDWebImage
 class DetailMovieViewController: UIViewController {
   private let disposeBag = DisposeBag()
   private let presenter: DetailMoviePresenter
+  private let router: DetailMovieRouter
 
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var posterImage: UIImageView!
@@ -23,8 +24,10 @@ class DetailMovieViewController: UIViewController {
   @IBOutlet weak var trailerButton: UIButton!
   @IBOutlet weak var castsCollectionView: UICollectionView!
 
-  init(presenter: DetailMoviePresenter) {
+  init(router: DetailMovieRouter,
+       presenter: DetailMoviePresenter) {
     self.presenter = presenter
+    self.router = router
     super.init(nibName: nil, bundle: nil)
     hidesBottomBarWhenPushed = true
   }
@@ -118,8 +121,7 @@ class DetailMovieViewController: UIViewController {
     guard let videoKey = presenter.trailer else {
       return
     }
-    let player = YoutubePlayerViewController(videoId: videoKey)
-    present(player, animated: true, completion: nil)
+    router.routeToYoutubePlayer(from: self, videoId: videoKey)
   }
 }
 
