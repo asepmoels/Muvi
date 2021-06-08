@@ -11,6 +11,7 @@ import SVProgressHUD
 import SnapKit
 import RxCocoa
 import RxRelay
+import EmptyDataSet_Swift
 
 class FavoriteViewController: UIViewController {
   private let disposeBag = DisposeBag()
@@ -48,12 +49,15 @@ class FavoriteViewController: UIViewController {
     view.addSubview(tableView)
     tableView.dataSource = self
     tableView.delegate = self
+    tableView.emptyDataSetDelegate = self
+    tableView.emptyDataSetSource = self
     tableView.rowHeight = 92
     tableView.backgroundColor = .mainColor
     tableView.snp.makeConstraints { [weak self] maker in
       guard let self = self else { return }
-      maker.leading.trailing.bottom.equalToSuperview()
+      maker.leading.trailing.equalToSuperview()
       maker.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+      maker.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
     }
     tableView.register(cellType: FavoriteMovieCell.self)
     view.backgroundColor = .mainBarColor
@@ -84,8 +88,9 @@ class FavoriteViewController: UIViewController {
       .subscribe(onNext: { [weak self] _ in
         guard let self = self else { return }
         self.tableView.snp.remakeConstraints({ (maker) in
-          maker.leading.trailing.bottom.equalToSuperview()
+          maker.leading.trailing.equalToSuperview()
           maker.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+          maker.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
         })
       }).disposed(by: disposeBag)
 
@@ -137,5 +142,39 @@ extension FavoriteViewController: UITableViewDelegate {
     if let item = presenter.movies.value?[indexPath.row] {
       router.routeToDetail(from: self, movie: item)
     }
+  }
+}
+
+extension FavoriteViewController: EmptyDataSetSource {
+  func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    searchBar.text?.isEmpty ?? false ?
+      NSAttributedString(string: "Empty") :
+      NSAttributedString(string: "Not Found")
+  }
+
+  func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    searchBar.text?.isEmpty ?? false ?
+      NSAttributedString(string: "You have no favorite movie for now.") :
+      NSAttributedString(string: "Sorry, no matched movie in your favorite list.")
+  }
+
+  func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+    searchBar.text?.isEmpty ?? false ?
+      UIImage.movieIcon :
+      UIImage.unknownIcon
+  }
+
+  func imageTintColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
+    UIColor.primaryYellow
+  }
+}
+
+extension FavoriteViewController: EmptyDataSetDelegate {
+  func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+    if let movies = presenter.movies.value,
+       movies.count > 0 {
+      return false
+    }
+    return true
   }
 }

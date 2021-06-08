@@ -11,6 +11,7 @@ import SVProgressHUD
 import SnapKit
 import RxCocoa
 import RxRelay
+import EmptyDataSet_Swift
 
 class SearchViewController: UIViewController {
   private let disposeBag = DisposeBag()
@@ -57,6 +58,8 @@ class SearchViewController: UIViewController {
     view.addSubview(collectionView)
     collectionView.dataSource = self
     collectionView.delegate = self
+    collectionView.emptyDataSetSource = self
+    collectionView.emptyDataSetDelegate = self
     collectionView.backgroundColor = .mainColor
     collectionView.snp.makeConstraints { [weak self] (maker) in
       guard let self = self else { return }
@@ -136,5 +139,39 @@ extension SearchViewController: UICollectionViewDelegate {
     if let item = presenter.movies.value?[indexPath.row] {
       router.routeToDetail(from: self, movie: item)
     }
+  }
+}
+
+extension SearchViewController: EmptyDataSetSource {
+  func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    searchBar.text?.isEmpty ?? false ?
+      NSAttributedString(string: "Search") :
+      NSAttributedString(string: "Not Found")
+  }
+
+  func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    searchBar.text?.isEmpty ?? false ?
+      NSAttributedString(string: "Begin to search the great movie here") :
+      NSAttributedString(string: "Sorry, we are unable to find the movie you want.")
+  }
+
+  func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+    searchBar.text?.isEmpty ?? false ?
+      UIImage.movieIcon :
+      UIImage.unknownIcon
+  }
+
+  func imageTintColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
+    UIColor.primaryYellow
+  }
+}
+
+extension SearchViewController: EmptyDataSetDelegate {
+  func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+    if let movies = presenter.movies.value,
+       movies.count > 0 {
+      return false
+    }
+    return true
   }
 }

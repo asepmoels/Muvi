@@ -13,4 +13,6 @@ extension UIImage {
   static let searchIcon = UIImage(named: "icon_search")!
   static let aboutIcon = UIImage(named: "tab_about")!
   static let backButton = UIImage(named: "btn_back")!
+  static let movieIcon = UIImage(named: "icon_movie")!
+  static let unknownIcon = UIImage(named: "icon_unknown")!
 }
