@@ -88,7 +88,7 @@ class SearchViewController: UIViewController {
         }
       }).disposed(by: disposeBag)
 
-    NotificationCenter.default.rx.notification(UIApplication.keyboardDidHideNotification)
+    NotificationCenter.default.rx.notification(UIApplication.keyboardWillHideNotification)
       .subscribe(onNext: { [weak self] _ in
         guard let self = self else { return }
         self.collectionView.snp.remakeConstraints({ (maker) in

@@ -10,9 +10,12 @@ import RxSwift
 
 struct MovieRepository: MovieRepositoryProtocol {
   private let remoteDataSource: RemoteDataSourceProtocol
+  private let localDataSource: LocalDataSourceProtocol
 
-  init(remoteDataSource: RemoteDataSourceProtocol) {
+  init(remoteDataSource: RemoteDataSourceProtocol,
+       localDataSource: LocalDataSourceProtocol) {
     self.remoteDataSource = remoteDataSource
+    self.localDataSource = localDataSource
   }
 
   func getNowPlaying() -> Observable<[Movie]> {
@@ -37,5 +40,17 @@ struct MovieRepository: MovieRepositoryProtocol {
 
   func searchMovie(keyword: String) -> Observable<[Movie]> {
     remoteDataSource.searchMovie(keyword: keyword)
+  }
+
+  func addFavorite(movie: Movie) -> Observable<Movie> {
+    localDataSource.addFavorite(movie: movie)
+  }
+
+  func removeFavorite(movie: Movie) -> Observable<Movie> {
+    localDataSource.removeFavorite(movie: movie)
+  }
+
+  func getFavorites(keyword: String) -> Observable<[Movie]> {
+    localDataSource.getFavorites(keyword: keyword)
   }
 }

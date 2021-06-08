@@ -16,6 +16,7 @@ pod 'RxRelay'
 pod 'SnapKit'
 pod 'SDWebImage'
 pod 'RxCocoa'
+pod 'RealmSwift'
 
   # Pods for MovieDB
 

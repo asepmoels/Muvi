@@ -7,17 +7,27 @@
 
 import Foundation
 import ObjectMapper
+import RealmSwift
 
-struct GenreEntity: Genre, Mappable {
-  var identifier: Int = 0
-  var name: String = ""
+class GenreEntity: Object, Genre, Mappable {
+  @objc dynamic var identifier: Int = 0
+  @objc dynamic var name: String = ""
 
-  init?(map: Map) {
+  override init() {
+    super.init()
+  }
+
+  required init?(map: Map) {
+    super.init()
     mapping(map: map)
   }
 
-  mutating func mapping(map: Map) {
+  func mapping(map: Map) {
     identifier <- map["id"]
     name <- map["name"]
+  }
+
+  override class func primaryKey() -> String? {
+    "identifier"
   }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Swinject
+import RealmSwift
 
 struct Injection {
   static let shared = Injection()
@@ -54,11 +55,18 @@ struct Injection {
     }
 
     container.register(MovieRepositoryProtocol.self) { _ in
-      MovieRepository(remoteDataSource: Injection.shared.resolve())
+      MovieRepository(remoteDataSource: Injection.shared.resolve(),
+                      localDataSource: Injection.shared.resolve())
     }
 
     container.register(RemoteDataSourceProtocol.self) { _ in
       RemoteDataSource()
+    }
+
+    container.register(LocalDataSourceProtocol.self) { _ in
+      let config = Realm.Configuration.init(schemaVersion: 1)
+      let realm = try? Realm(configuration: config)
+      return LocalDataSource(realm: realm)
     }
 
     container.register(SearchViewController.self) { _ in

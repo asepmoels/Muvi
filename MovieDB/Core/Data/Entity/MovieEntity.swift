@@ -7,6 +7,7 @@
 
 import Foundation
 import ObjectMapper
+import RealmSwift
 
 struct MovieResponse: Mappable {
   var totalResults: Int?
@@ -26,41 +27,50 @@ struct MovieResponse: Mappable {
   }
 }
 
-struct MovieEntity: Movie, Mappable {
-  var revenue: Int?
-  var popularity: Double?
-  var overview: String?
-  var posterURL: URL?
-  var releaseDate: String?
-  var budget: Int?
-  var voteAverage: Double?
-  var status: String?
-  private var dataGenres: [GenreEntity]?
-  var title: String?
-  var identifier: Int?
-  var video: Bool?
-  var adult: Bool?
-  var originalTitle: String?
+class MovieEntity: Object, Movie, Mappable {
+  @objc dynamic var revenue: Int = 0
+  @objc dynamic var popularity: Double = 0
+  @objc dynamic var overview: String = ""
+  @objc dynamic var releaseDate: String = ""
+  @objc dynamic var budget: Int = 0
+  @objc dynamic var voteAverage: Double = 0
+  @objc dynamic var status: String = ""
+  @objc dynamic var title: String = ""
+  @objc dynamic var identifier: Int = 0
+  @objc dynamic var video: Bool = false
+  @objc dynamic var adult: Bool = false
+  @objc dynamic var originalTitle: String = ""
+  @objc dynamic var homepage: String = ""
+  @objc dynamic var originalLanguage: String = ""
+  @objc dynamic var runtime: Int = 0
+  @objc dynamic var voteCount: Int = 0
+  @objc dynamic var imdbId: String = ""
+  @objc dynamic var tagline: String = ""
+  @objc dynamic var backdropURLString: String = ""
+  @objc dynamic var posterURLString: String = ""
+
+  dynamic private var dataGenres: List<GenreEntity> = List()
+  var genres: [Genre] {
+    dataGenres.map({ $0 })
+  }
   var backdropURL: URL?
-  var homepage: String?
-  var originalLanguage: String?
-  var runtime: Int?
-  var voteCount: Int?
-  var imdbId: String?
-  var tagline: String?
-  var belongsToCollection: Any?
-  var genres: [Genre]? {
-    dataGenres
+  var posterURL: URL?
+
+  override init() {
+    super.init()
+    mapping(map: Map(mappingType: .fromJSON, JSON: self.toJSON()))
   }
 
-  init?(map: Map) {
+  required init?(map: Map) {
+    super.init()
     mapping(map: map)
   }
 
-  mutating func mapping(map: Map) {
+  func mapping(map: Map) {
     revenue <- map["revenue"]
     popularity <- map["popularity"]
     overview <- map["overview"]
+    posterURLString <- map["poster_path"]
     posterURL <- (map["poster_path"], ImageURLTransform())
     releaseDate <- map["release_date"]
     budget <- map["budget"]
@@ -73,12 +83,12 @@ struct MovieEntity: Movie, Mappable {
     adult <- map["adult"]
     originalTitle <- map["original_title"]
     backdropURL <- (map["backdrop_path"], ImageURLTransform())
+    backdropURLString <- map["backdrop_path"]
     homepage <- map["homepage"]
     originalLanguage <- map["original_language"]
     runtime <- map["runtime"]
     voteCount <- map["vote_count"]
     imdbId <- map["imdb_id"]
     tagline <- map["tagline"]
-    belongsToCollection <- map["belongs_to_collection"]
   }
 }

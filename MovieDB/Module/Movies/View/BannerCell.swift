@@ -24,7 +24,7 @@ class BannerCell: UICollectionViewCell, NibReusable {
   }
 
   private func setContent() {
-    titleLabel.text = item?.title?.uppercased()
+    titleLabel.text = item?.title.uppercased()
     imageView.sd_imageIndicator = SDWebImageActivityIndicator.white
     imageView.sd_setImage(with: item?.backdropURL)
   }
