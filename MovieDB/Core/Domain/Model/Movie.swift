@@ -29,4 +29,7 @@ protocol Movie {
   var popularity: Double { get }
   var posterURL: URL? { get }
   var budget: Int { get }
+  var isFavorite: Bool { get set }
+  var casts: [Cast]? { get }
+  var videos: [Video]? { get }
 }

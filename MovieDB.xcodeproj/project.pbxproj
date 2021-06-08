@@ -61,6 +61,12 @@
 		9E3F86EE266EFA95001B8AEE /* DetailMovieViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E3F86EC266EFA95001B8AEE /* DetailMovieViewController.xib */; };
 		9E3F86F3266EFB60001B8AEE /* DetailMovieRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F86F2266EFB60001B8AEE /* DetailMovieRouter.swift */; };
 		9E3F86F8266EFC7A001B8AEE /* MovieRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F86F7266EFC7A001B8AEE /* MovieRouter.swift */; };
+		9E3F872A266F7116001B8AEE /* Cast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F8729266F7115001B8AEE /* Cast.swift */; };
+		9E3F872F266F716D001B8AEE /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F872E266F716D001B8AEE /* Video.swift */; };
+		9E3F8734266F719A001B8AEE /* CastEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F8733266F719A001B8AEE /* CastEntity.swift */; };
+		9E3F8739266F72C3001B8AEE /* VideoEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F8738266F72C3001B8AEE /* VideoEntity.swift */; };
+		9E3F873E266F759E001B8AEE /* CastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F873D266F759E001B8AEE /* CastCell.swift */; };
+		9E3F876F266F7CB7001B8AEE /* YoutubePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F876E266F7CB6001B8AEE /* YoutubePlayerViewController.swift */; };
 		A7F7B5D7B3366301CE4BB204 /* Pods_MovieDBTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF40B503A053E857E6830709 /* Pods_MovieDBTests.framework */; };
 		E056F4CF9290DC04AE190EA4 /* Pods_MovieDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C8A2F0893088A1A810EC2D1 /* Pods_MovieDB.framework */; };
 /* End PBXBuildFile section */
@@ -146,6 +152,12 @@
 		9E3F86EC266EFA95001B8AEE /* DetailMovieViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailMovieViewController.xib; sourceTree = "<group>"; };
 		9E3F86F2266EFB60001B8AEE /* DetailMovieRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMovieRouter.swift; sourceTree = "<group>"; };
 		9E3F86F7266EFC7A001B8AEE /* MovieRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRouter.swift; sourceTree = "<group>"; };
+		9E3F8729266F7115001B8AEE /* Cast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cast.swift; sourceTree = "<group>"; };
+		9E3F872E266F716D001B8AEE /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		9E3F8733266F719A001B8AEE /* CastEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastEntity.swift; sourceTree = "<group>"; };
+		9E3F8738266F72C3001B8AEE /* VideoEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEntity.swift; sourceTree = "<group>"; };
+		9E3F873D266F759E001B8AEE /* CastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastCell.swift; sourceTree = "<group>"; };
+		9E3F876E266F7CB6001B8AEE /* YoutubePlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubePlayerViewController.swift; sourceTree = "<group>"; };
 		9E925DE4256490A895F4413E /* Pods-MovieDB.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieDB.debug.xcconfig"; path = "Target Support Files/Pods-MovieDB/Pods-MovieDB.debug.xcconfig"; sourceTree = "<group>"; };
 		AF40B503A053E857E6830709 /* Pods_MovieDBTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieDBTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA2885E8D129572D25D15389 /* Pods-MovieDB-MovieDBUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieDB-MovieDBUITests.release.xcconfig"; path = "Target Support Files/Pods-MovieDB-MovieDBUITests/Pods-MovieDB-MovieDBUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -339,6 +351,8 @@
 			children = (
 				9E3F8539266DF546001B8AEE /* Genre.swift */,
 				9E3F85A6266E0BB2001B8AEE /* Movie.swift */,
+				9E3F8729266F7115001B8AEE /* Cast.swift */,
+				9E3F872E266F716D001B8AEE /* Video.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -412,6 +426,8 @@
 			children = (
 				9E3F85C9266E122D001B8AEE /* GenreEntity.swift */,
 				9E3F85CE266E1248001B8AEE /* MovieEntity.swift */,
+				9E3F8733266F719A001B8AEE /* CastEntity.swift */,
+				9E3F8738266F72C3001B8AEE /* VideoEntity.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -456,6 +472,8 @@
 			children = (
 				9E3F86EB266EFA95001B8AEE /* DetailMovieViewController.swift */,
 				9E3F86EC266EFA95001B8AEE /* DetailMovieViewController.xib */,
+				9E3F873D266F759E001B8AEE /* CastCell.swift */,
+				9E3F876E266F7CB6001B8AEE /* YoutubePlayerViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -868,11 +886,13 @@
 				9E3F86DA266EF77E001B8AEE /* DetailMoviePresenter.swift in Sources */,
 				9E3F8651266E52BA001B8AEE /* SearchTextField.swift in Sources */,
 				9E3F86A9266EE711001B8AEE /* FavoriteMovieInteractor.swift in Sources */,
+				9E3F8739266F72C3001B8AEE /* VideoEntity.swift in Sources */,
 				9E3F864C266E4F40001B8AEE /* SearchPresenter.swift in Sources */,
 				9E3F8517266DEE89001B8AEE /* NetworkService.swift in Sources */,
 				9E3F843D266DBB52001B8AEE /* AppDelegate.swift in Sources */,
 				9E3F863C266E33C5001B8AEE /* BannerCell.swift in Sources */,
 				9E3F853A266DF546001B8AEE /* Genre.swift in Sources */,
+				9E3F872A266F7116001B8AEE /* Cast.swift in Sources */,
 				9E3F8544266DF603001B8AEE /* MovieRepository.swift in Sources */,
 				9E3F86F8266EFC7A001B8AEE /* MovieRouter.swift in Sources */,
 				9E3F84EA266DDA35001B8AEE /* UIImage.swift in Sources */,
@@ -883,10 +903,14 @@
 				9E3F84D0266DCD42001B8AEE /* Injection.swift in Sources */,
 				9E3F85A2266E083E001B8AEE /* MovieGenreHeaderView.swift in Sources */,
 				9E3F8629266E29EE001B8AEE /* UpcomingInteractor.swift in Sources */,
+				9E3F873E266F759E001B8AEE /* CastCell.swift in Sources */,
 				9E3F85B7266E113A001B8AEE /* NowPlayingInteractor.swift in Sources */,
+				9E3F872F266F716D001B8AEE /* Video.swift in Sources */,
+				9E3F8734266F719A001B8AEE /* CastEntity.swift in Sources */,
 				9E3F8509266DDF6F001B8AEE /* UIColor.swift in Sources */,
 				9E3F86AE266EE765001B8AEE /* LocalDataSource.swift in Sources */,
 				9E3F8611266E1F80001B8AEE /* Config.swift in Sources */,
+				9E3F876F266F7CB7001B8AEE /* YoutubePlayerViewController.swift in Sources */,
 				9E3F869F266EE67D001B8AEE /* AddFavoriteInteractor.swift in Sources */,
 				9E3F848F266DBEB9001B8AEE /* HomeRouter.swift in Sources */,
 				9E3F8693266E6670001B8AEE /* AboutViewController.swift in Sources */,

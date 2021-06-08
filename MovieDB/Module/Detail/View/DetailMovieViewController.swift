@@ -19,6 +19,9 @@ class DetailMovieViewController: UIViewController {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var genreLabel: UILabel!
   @IBOutlet weak var overviewLabel: UILabel!
+  @IBOutlet weak var favoriteButton: UIButton!
+  @IBOutlet weak var trailerButton: UIButton!
+  @IBOutlet weak var castsCollectionView: UICollectionView!
 
   init(presenter: DetailMoviePresenter) {
     self.presenter = presenter
@@ -55,6 +58,9 @@ class DetailMovieViewController: UIViewController {
 
   private func configureViews() {
     scrollView.contentInsetAdjustmentBehavior = .never
+    favoriteButton.titleLabel?.numberOfLines = 0
+    favoriteButton.titleLabel?.textAlignment = .center
+    castsCollectionView.register(cellType: CastCell.self)
   }
 
   private func observePresenter() {
@@ -69,11 +75,25 @@ class DetailMovieViewController: UIViewController {
 
   private func updateContent() {
     let item = presenter.movie.value
+    if !(item?.isFavorite ?? false),
+       favoriteButton.isSelected {
+      favoriteButton.isSelected = false
+      presenter.getDetailMovie()
+      return
+    }
     titleLabel.text = item?.title
     genreLabel.text = item?.genres
       .map({ $0.name }).joined(separator: " • ")
     posterImage.sd_imageIndicator = SDWebImageActivityIndicator.white
     posterImage.sd_setImage(with: item?.posterURL)
+    favoriteButton.isSelected = item?.isFavorite ?? false
+    castsCollectionView.reloadData()
+    if let layout = castsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+      layout.itemSize = CGSize(width: 90, height: 148)
+      layout.minimumInteritemSpacing = 8
+      layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    }
+    trailerButton.isHidden = presenter.trailer == nil
 
     if let overview = item?.overview {
       let paragraphStyle = NSMutableParagraphStyle()
@@ -84,5 +104,33 @@ class DetailMovieViewController: UIViewController {
       let attributtedString = NSAttributedString(string: overview, attributes: attribute)
       overviewLabel.attributedText = attributtedString
     }
+  }
+
+  @IBAction func favoriteButtonDidTapped(_ sender: UIButton) {
+    if sender.isSelected {
+      presenter.removeFromFavorite()
+    } else {
+      presenter.addToFavorite()
+    }
+  }
+
+  @IBAction func watchButtonDidTapped(_ sender: Any) {
+    guard let videoKey = presenter.trailer else {
+      return
+    }
+    let player = YoutubePlayerViewController(videoId: videoKey)
+    present(player, animated: true, completion: nil)
+  }
+}
+
+extension DetailMovieViewController: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    presenter.movie.value?.casts?.count ?? 0
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell: CastCell = collectionView.dequeueReusableCell(for: indexPath)
+    cell.item = presenter.movie.value?.casts?[indexPath.row]
+    return cell
   }
 }

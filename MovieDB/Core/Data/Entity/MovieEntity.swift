@@ -6,21 +6,21 @@
 //
 
 import Foundation
-import ObjectMapper
 import RealmSwift
+import ObjectMapper
 import ObjectMapper_Realm
 
-struct MovieResponse: Mappable {
+class MovieResponse: Mappable {
   var totalResults: Int?
   var page: Int?
   var totalPages: Int?
   var results: [MovieEntity]?
 
-  init?(map: Map) {
+  required init?(map: Map) {
     mapping(map: map)
   }
 
-  mutating func mapping(map: Map) {
+  func mapping(map: Map) {
     totalResults <- map["total_results"]
     page <- map["page"]
     totalPages <- map["total_pages"]
@@ -29,37 +29,53 @@ struct MovieResponse: Mappable {
 }
 
 class MovieEntity: Object, Movie, Mappable {
-  @objc dynamic var revenue: Int = 0
-  @objc dynamic var popularity: Double = 0
-  @objc dynamic var overview: String = ""
-  @objc dynamic var releaseDate: String = ""
-  @objc dynamic var budget: Int = 0
-  @objc dynamic var voteAverage: Double = 0
-  @objc dynamic var status: String = ""
-  @objc dynamic var title: String = ""
   @objc dynamic var identifier: Int = 0
-  @objc dynamic var video: Bool = false
-  @objc dynamic var adult: Bool = false
-  @objc dynamic var originalTitle: String = ""
-  @objc dynamic var homepage: String = ""
-  @objc dynamic var originalLanguage: String = ""
-  @objc dynamic var runtime: Int = 0
-  @objc dynamic var voteCount: Int = 0
-  @objc dynamic var imdbId: String = ""
-  @objc dynamic var tagline: String = ""
-  @objc dynamic var backdropURLString: String = ""
-  @objc dynamic var posterURLString: String = ""
+  dynamic var revenue: Int = 0
+  dynamic var popularity: Double = 0
+  dynamic var overview: String = ""
+  dynamic var releaseDate: String = ""
+  dynamic var budget: Int = 0
+  dynamic var voteAverage: Double = 0
+  dynamic var status: String = ""
+  dynamic var title: String = ""
+  dynamic var video: Bool = false
+  dynamic var adult: Bool = false
+  dynamic var originalTitle: String = ""
+  dynamic var homepage: String = ""
+  dynamic var originalLanguage: String = ""
+  dynamic var runtime: Int = 0
+  dynamic var voteCount: Int = 0
+  dynamic var imdbId: String = ""
+  dynamic var tagline: String = ""
+  dynamic var backdropURLString: String = ""
+  dynamic var posterURLString: String = ""
+  var isFavorite: Bool = false
 
   dynamic private var dataGenres: List<GenreEntity> = List()
   var genres: [Genre] {
     dataGenres.map({ $0 })
   }
+  private var dataCasts: [CastEntity]?
+  var casts: [Cast]? {
+    dataCasts?.map({ $0 })
+  }
+  private var dataVideos: [VideoEntity]?
+  var videos: [Video]? {
+    dataVideos?.map({ $0 })
+  }
   var backdropURL: URL?
   var posterURL: URL?
 
+  override class func primaryKey() -> String? {
+    "identifier"
+  }
+
+  override class func ignoredProperties() -> [String] {
+    ["genres", "backdropURL", "posterURL", "isFavorite"]
+  }
+
   override init() {
     super.init()
-    mapping(map: Map(mappingType: .fromJSON, JSON: self.toJSON()))
   }
 
   required init?(map: Map) {
@@ -91,5 +107,7 @@ class MovieEntity: Object, Movie, Mappable {
     voteCount <- map["vote_count"]
     imdbId <- map["imdb_id"]
     tagline <- map["tagline"]
+    dataVideos <- map["videos.results"]
+    dataCasts <- map["casts.cast"]
   }
 }

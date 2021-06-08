@@ -17,6 +17,7 @@ pod 'SnapKit'
 pod 'SDWebImage'
 pod 'RxCocoa'
 pod 'RealmSwift'
+pod 'youtube-ios-player-helper'
 
   # Pods for MovieDB
 

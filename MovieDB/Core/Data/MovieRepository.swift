@@ -55,6 +55,13 @@ struct MovieRepository: MovieRepositoryProtocol {
   }
 
   func getDetailMovie(movieId: String) -> Observable<Movie> {
-    remoteDataSource.getDetail(movieId: movieId)
+    let movieID = Int(movieId) ?? 0
+    let isFavorited = localDataSource.isFavorited(movieId: movieID)
+    return remoteDataSource.getDetail(movieId: movieId)
+      .map { (item) -> Movie in
+        var modified = item
+        modified.isFavorite = isFavorited
+        return modified
+      }
   }
 }

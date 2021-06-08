@@ -7,6 +7,7 @@
 
 import Foundation
 import ObjectMapper
+import ObjectMapper_Realm
 import RealmSwift
 
 class GenreEntity: Object, Genre, Mappable {

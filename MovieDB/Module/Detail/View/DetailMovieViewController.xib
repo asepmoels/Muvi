@@ -9,11 +9,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailMovieViewController" customModule="MovieDB" customModuleProvider="target">
             <connections>
+                <outlet property="castsCollectionView" destination="UzX-fU-XWb" id="NF8-uP-yij"/>
+                <outlet property="favoriteButton" destination="HAf-aU-5YB" id="DaU-wy-i9W"/>
                 <outlet property="genreLabel" destination="a4k-jA-OVs" id="FlL-Cv-ntA"/>
                 <outlet property="overviewLabel" destination="naC-4Z-dYS" id="uOt-E3-2KC"/>
                 <outlet property="posterImage" destination="cGJ-1I-iZw" id="2jG-qR-t03"/>
                 <outlet property="scrollView" destination="x3x-kt-9zi" id="Den-Sv-8CL"/>
                 <outlet property="titleLabel" destination="hJu-Bj-0w4" id="32A-Vt-fd4"/>
+                <outlet property="trailerButton" destination="vsm-oo-a1M" id="zEJ-2y-Uu8"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -26,7 +29,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2RJ-wC-fRo">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="574.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cGJ-1I-iZw">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="641"/>
@@ -71,47 +74,84 @@
                                                     <integer key="value" value="4"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="watchButtonDidTapped:" destination="-1" eventType="touchUpInside" id="JsF-mT-dQv"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HAf-aU-5YB">
                                             <rect key="frame" x="194" y="0.0" width="180" height="36"/>
                                             <color key="backgroundColor" red="0.12549019610000001" green="0.12941176469999999" blue="0.13725490200000001" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="tintColor" red="1" green="0.82352941180000006" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                             <state key="normal" title="Add To Favorite" image="btn_plus">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </state>
+                                            <state key="selected" title="Remove From Favorite" image="minus" catalog="system"/>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                     <integer key="value" value="4"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="favoriteButtonDidTapped:" destination="-1" eventType="touchUpInside" id="zdu-58-XaR"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="36" id="Db4-Hd-Bma"/>
                                     </constraints>
                                 </stackView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Casts" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fXK-XI-0Yc">
+                                    <rect key="frame" x="20" y="586.5" width="374" height="21.5"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="UzX-fU-XWb">
+                                    <rect key="frame" x="0.0" y="632" width="414" height="148"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="148" id="jQl-UW-vdB"/>
+                                    </constraints>
+                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="PvX-qL-JGc">
+                                        <size key="itemSize" width="128" height="128"/>
+                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </collectionViewFlowLayout>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-1" id="wY7-nl-jgy"/>
+                                        <outlet property="delegate" destination="-1" id="nfz-jI-RGw"/>
+                                    </connections>
+                                </collectionView>
                             </subviews>
                             <color key="backgroundColor" red="0.1450980392" green="0.1529411765" blue="0.1647058824" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="naC-4Z-dYS" secondAttribute="trailing" constant="20" id="0v7-p8-CrF"/>
                                 <constraint firstAttribute="trailing" secondItem="SeD-Se-mIJ" secondAttribute="trailing" id="6m7-4b-jld"/>
                                 <constraint firstAttribute="trailing" secondItem="uKu-aj-pof" secondAttribute="trailing" constant="20" id="Aoo-af-1If"/>
-                                <constraint firstAttribute="bottom" secondItem="naC-4Z-dYS" secondAttribute="bottom" constant="20" id="IKR-iJ-YMx"/>
+                                <constraint firstAttribute="trailing" secondItem="fXK-XI-0Yc" secondAttribute="trailing" constant="20" id="EO0-ez-b8M"/>
                                 <constraint firstAttribute="trailing" secondItem="cGJ-1I-iZw" secondAttribute="trailing" id="IjV-UC-zv2"/>
+                                <constraint firstAttribute="bottom" secondItem="UzX-fU-XWb" secondAttribute="bottom" constant="20" id="Mwp-Rr-ffX"/>
                                 <constraint firstItem="naC-4Z-dYS" firstAttribute="top" secondItem="uKu-aj-pof" secondAttribute="bottom" constant="24" id="Xd7-xd-VSE"/>
                                 <constraint firstItem="uKu-aj-pof" firstAttribute="top" secondItem="a4k-jA-OVs" secondAttribute="bottom" constant="24" id="XoV-8v-Tx1"/>
+                                <constraint firstItem="UzX-fU-XWb" firstAttribute="leading" secondItem="2RJ-wC-fRo" secondAttribute="leading" id="Yxh-MU-VbR"/>
                                 <constraint firstItem="uKu-aj-pof" firstAttribute="leading" secondItem="2RJ-wC-fRo" secondAttribute="leading" constant="20" id="bDA-am-G0b"/>
                                 <constraint firstAttribute="trailing" secondItem="hJu-Bj-0w4" secondAttribute="trailing" constant="20" id="bgZ-3j-gkX"/>
                                 <constraint firstItem="hJu-Bj-0w4" firstAttribute="top" secondItem="2RJ-wC-fRo" secondAttribute="top" constant="389" id="cUK-Cp-2St"/>
+                                <constraint firstAttribute="trailing" secondItem="UzX-fU-XWb" secondAttribute="trailing" id="d9m-bC-UaG"/>
+                                <constraint firstItem="fXK-XI-0Yc" firstAttribute="leading" secondItem="2RJ-wC-fRo" secondAttribute="leading" constant="20" id="dyk-yD-EcA"/>
                                 <constraint firstItem="cGJ-1I-iZw" firstAttribute="top" secondItem="2RJ-wC-fRo" secondAttribute="top" id="fyf-Sq-RN4"/>
                                 <constraint firstItem="SeD-Se-mIJ" firstAttribute="bottom" secondItem="cGJ-1I-iZw" secondAttribute="bottom" id="h5a-d4-BDI"/>
+                                <constraint firstItem="fXK-XI-0Yc" firstAttribute="top" secondItem="naC-4Z-dYS" secondAttribute="bottom" constant="32" id="h6z-oj-Vh5"/>
                                 <constraint firstAttribute="trailing" secondItem="a4k-jA-OVs" secondAttribute="trailing" constant="20" id="hHk-Qc-97k"/>
                                 <constraint firstItem="cGJ-1I-iZw" firstAttribute="leading" secondItem="2RJ-wC-fRo" secondAttribute="leading" id="hsU-qd-qlU"/>
                                 <constraint firstItem="naC-4Z-dYS" firstAttribute="leading" secondItem="2RJ-wC-fRo" secondAttribute="leading" constant="20" id="iYS-Lf-EuB"/>
                                 <constraint firstItem="a4k-jA-OVs" firstAttribute="leading" secondItem="2RJ-wC-fRo" secondAttribute="leading" constant="20" id="lNb-g4-6Iw"/>
                                 <constraint firstItem="a4k-jA-OVs" firstAttribute="top" secondItem="hJu-Bj-0w4" secondAttribute="bottom" constant="14" id="nq2-Cs-6c9"/>
                                 <constraint firstItem="SeD-Se-mIJ" firstAttribute="leading" secondItem="2RJ-wC-fRo" secondAttribute="leading" id="nvf-ag-A6Q"/>
+                                <constraint firstItem="UzX-fU-XWb" firstAttribute="top" secondItem="fXK-XI-0Yc" secondAttribute="bottom" constant="24" id="pXy-OE-Mwm"/>
                                 <constraint firstItem="hJu-Bj-0w4" firstAttribute="leading" secondItem="2RJ-wC-fRo" secondAttribute="leading" constant="20" id="vwO-GN-0hZ"/>
                             </constraints>
                         </view>
@@ -142,5 +182,6 @@
         <image name="btn_play" width="14" height="14"/>
         <image name="btn_plus" width="14" height="14"/>
         <image name="img_gradient" width="375" height="563"/>
+        <image name="minus" catalog="system" width="128" height="24"/>
     </resources>
 </document>

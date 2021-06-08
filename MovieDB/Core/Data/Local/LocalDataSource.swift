@@ -13,6 +13,7 @@ protocol LocalDataSourceProtocol {
   func addFavorite(movie: Movie) -> Observable<Movie>
   func removeFavorite(movie: Movie) -> Observable<Movie>
   func getFavorites(keyword: String) -> Observable<[Movie]>
+  func isFavorited(movieId: Int) -> Bool
 }
 
 struct LocalDataSource: LocalDataSourceProtocol {
@@ -23,35 +24,39 @@ struct LocalDataSource: LocalDataSourceProtocol {
   }
 
   func addFavorite(movie: Movie) -> Observable<Movie> {
-    let result = PublishSubject<Movie>.init()
+    let result = ReplaySubject<Movie>.createUnbounded()
     if let realm = realm,
        let object = movie as? MovieEntity {
       do {
         try realm.write {
-          realm.add(object)
-          result.onNext(object)
+          realm.add(object, update: .all)
         }
+        object.isFavorite = true
+        result.onNext(object)
+        result.onCompleted()
       } catch {
         result.onError(error)
       }
     }
-    return result.asObservable()
+    return result
   }
 
   func removeFavorite(movie: Movie) -> Observable<Movie> {
-    let result = PublishSubject<Movie>.init()
+    let result = ReplaySubject<Movie>.createUnbounded()
     if let realm = realm,
-       let object = movie as? MovieEntity {
+       let object = savedMovie(with: movie.identifier) {
       do {
         try realm.write {
           realm.delete(object)
-          result.onNext(object)
         }
+        object.isFavorite = false
+        result.onNext(object)
+        result.onCompleted()
       } catch {
         result.onError(error)
       }
     }
-    return result.asObservable()
+    return result
   }
 
   func getFavorites(keyword: String) -> Observable<[Movie]> {
@@ -68,5 +73,14 @@ struct LocalDataSource: LocalDataSourceProtocol {
       result.onNext([])
     }
     return result.asObservable()
+  }
+
+  private func savedMovie(with movieId: Int) -> MovieEntity? {
+    let movie = realm?.object(ofType: MovieEntity.self, forPrimaryKey: movieId)
+    return movie
+  }
+
+  func isFavorited(movieId: Int) -> Bool {
+    return savedMovie(with: movieId) != nil
   }
 }

@@ -13,20 +13,23 @@ struct Injection {
   static let shared = Injection()
   private let container = Container()
 
+  let realm: Realm? = try? Realm(
+    configuration: Realm.Configuration.init(schemaVersion: 1)
+  )
+
   init() {
     registerHomeFeature()
     registerMovieFeature()
     registerSearchFeature()
     registerAboutFeature()
     registerDetailFeature()
+    registerFavoriteFeature()
 
     container.register(RemoteDataSourceProtocol.self) { _ in
       RemoteDataSource()
     }
     container.register(LocalDataSourceProtocol.self) { _ in
-      let config = Realm.Configuration.init(schemaVersion: 1)
-      let realm = try? Realm(configuration: config)
-      return LocalDataSource(realm: realm)
+      return LocalDataSource(realm: Injection.shared.realm)
     }
   }
 
@@ -99,13 +102,27 @@ struct Injection {
       DetailMovieViewController(presenter: Injection.shared.resolve())
     }
     container.register(DetailMoviePresenter.self) { _ in
-      DetailMoviePresenter(detailUseCase: Injection.shared.resolve())
+      DetailMoviePresenter(detailUseCase: Injection.shared.resolve(),
+                           addFavoriteUseCase: Injection.shared.resolve(),
+                           removeFavoriteUseCase: Injection.shared.resolve())
     }
     container.register(DetailMovieRouter.self) { _ in
       DetailMovieRouter()
     }
     container.register(DetailMovieUseCase.self) { _ in
       DetailMovieInteractor(repository: Injection.shared.resolve())
+    }
+  }
+
+  private func registerFavoriteFeature() {
+    container.register(AddFavoriteUseCase.self) { _ in
+      AddFavoriteInteractor(repository: Injection.shared.resolve())
+    }
+    container.register(RemoveFavoriteUseCase.self) { _ in
+      RemoveFavoriteInteractor(repository: Injection.shared.resolve())
+    }
+    container.register(FavoriteMovieUseCase.self) { _ in
+      FavoriteMovieInteractor(repository: Injection.shared.resolve())
     }
   }
 

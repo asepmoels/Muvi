@@ -48,6 +48,8 @@ extension API: TargetType {
     switch self {
     case .search(let query) where query.count > 0:
       defaultParams["query"] = query
+    case .detailMovie:
+      defaultParams["append_to_response"] = "casts,videos"
     default:
       break
     }
