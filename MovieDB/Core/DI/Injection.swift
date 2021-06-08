@@ -14,18 +14,39 @@ struct Injection {
   private let container = Container()
 
   init() {
+    registerHomeFeature()
+    registerMovieFeature()
+    registerSearchFeature()
+    registerAboutFeature()
+    registerDetailFeature()
+
+    container.register(RemoteDataSourceProtocol.self) { _ in
+      RemoteDataSource()
+    }
+    container.register(LocalDataSourceProtocol.self) { _ in
+      let config = Realm.Configuration.init(schemaVersion: 1)
+      let realm = try? Realm(configuration: config)
+      return LocalDataSource(realm: realm)
+    }
+  }
+
+  private func registerHomeFeature() {
     container.register(HomeRouter.self, factory: { _ in
       HomeRouter()
     })
-
     container.register(HomeTabViewController.self) { _ in
       HomeTabViewController(router: Injection.shared.resolve())
     }
+  }
 
+  private func registerMovieFeature() {
     container.register(MoviesViewController.self) { _ in
-      MoviesViewController(presenter: Injection.shared.resolve())
+      MoviesViewController(router: Injection.shared.resolve(),
+                           presenter: Injection.shared.resolve())
     }
-
+    container.register(MovieRouter.self) { _ in
+      MovieRouter()
+    }
     container.register(MoviePresenter.self) { _ in
       MoviePresenter(nowPlayingUseCase: Injection.shared.resolve(),
                      popularUseCase: Injection.shared.resolve(),
@@ -33,56 +54,58 @@ struct Injection {
                      upcomingUseCase: Injection.shared.resolve(),
                      trendingUseCase: Injection.shared.resolve())
     }
-
     container.register(NowPlayingUseCase.self) { _ in
       NowPlayingInteractor(repository: Injection.shared.resolve())
     }
-
     container.register(PopularUseCase.self) { _ in
       PopularInteractor(repository: Injection.shared.resolve())
     }
-
     container.register(TopRatedUseCase.self) { _ in
       TopRatedInteractor(repository: Injection.shared.resolve())
     }
-
     container.register(UpcomingUseCase.self) { _ in
       UpcomingInteractor(repository: Injection.shared.resolve())
     }
-
     container.register(TrendingUseCase.self) { _ in
       TrendingInteractor(repository: Injection.shared.resolve())
     }
-
     container.register(MovieRepositoryProtocol.self) { _ in
       MovieRepository(remoteDataSource: Injection.shared.resolve(),
                       localDataSource: Injection.shared.resolve())
     }
+  }
 
-    container.register(RemoteDataSourceProtocol.self) { _ in
-      RemoteDataSource()
-    }
-
-    container.register(LocalDataSourceProtocol.self) { _ in
-      let config = Realm.Configuration.init(schemaVersion: 1)
-      let realm = try? Realm(configuration: config)
-      return LocalDataSource(realm: realm)
-    }
-
+  private func registerSearchFeature() {
     container.register(SearchViewController.self) { _ in
-      SearchViewController(presenter: Injection.shared.resolve())
+      SearchViewController(router: Injection.shared.resolve(),
+                           presenter: Injection.shared.resolve())
     }
-
     container.register(SearchPresenter.self) { _ in
       SearchPresenter(searchUseCase: Injection.shared.resolve())
     }
-
     container.register(SearchMovieUseCase.self) { _ in
       SearchMovieInteractor(repository: Injection.shared.resolve())
     }
+  }
 
+  private func registerAboutFeature() {
     container.register(AboutViewController.self) { _ in
       AboutViewController()
+    }
+  }
+
+  private func registerDetailFeature() {
+    container.register(DetailMovieViewController.self) { _ in
+      DetailMovieViewController(presenter: Injection.shared.resolve())
+    }
+    container.register(DetailMoviePresenter.self) { _ in
+      DetailMoviePresenter(detailUseCase: Injection.shared.resolve())
+    }
+    container.register(DetailMovieRouter.self) { _ in
+      DetailMovieRouter()
+    }
+    container.register(DetailMovieUseCase.self) { _ in
+      DetailMovieInteractor(repository: Injection.shared.resolve())
     }
   }
 

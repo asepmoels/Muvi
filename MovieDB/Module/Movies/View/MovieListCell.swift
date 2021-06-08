@@ -17,6 +17,7 @@ class MovieListCell: UITableViewCell, Reusable {
       collectionView.reloadData()
     }
   }
+  var selectionHandler: ((Movie) -> Void)?
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -62,5 +63,10 @@ extension MovieListCell: UICollectionViewDataSource {
 }
 
 extension MovieListCell: UICollectionViewDelegate {
-
+  func collectionView(_ collectionView: UICollectionView,
+                      didSelectItemAt indexPath: IndexPath) {
+    if let movie = items?[indexPath.row] {
+      selectionHandler?(movie)
+    }
+  }
 }

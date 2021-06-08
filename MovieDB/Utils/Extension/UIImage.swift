@@ -12,4 +12,5 @@ extension UIImage {
   static let navbarLogo = UIImage(named: "logo_navbar")!.withRenderingMode(.alwaysOriginal)
   static let searchIcon = UIImage(named: "icon_search")!
   static let aboutIcon = UIImage(named: "tab_about")!
+  static let backButton = UIImage(named: "btn_back")!
 }

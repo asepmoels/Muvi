@@ -55,6 +55,12 @@
 		9E3F86A4266EE6D1001B8AEE /* RemoveFavoriteInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F86A3266EE6D1001B8AEE /* RemoveFavoriteInteractor.swift */; };
 		9E3F86A9266EE711001B8AEE /* FavoriteMovieInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F86A8266EE711001B8AEE /* FavoriteMovieInteractor.swift */; };
 		9E3F86AE266EE765001B8AEE /* LocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F86AD266EE765001B8AEE /* LocalDataSource.swift */; };
+		9E3F86DA266EF77E001B8AEE /* DetailMoviePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F86D9266EF77E001B8AEE /* DetailMoviePresenter.swift */; };
+		9E3F86DF266EF81F001B8AEE /* DetailMovieInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F86DE266EF81F001B8AEE /* DetailMovieInteractor.swift */; };
+		9E3F86ED266EFA95001B8AEE /* DetailMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F86EB266EFA95001B8AEE /* DetailMovieViewController.swift */; };
+		9E3F86EE266EFA95001B8AEE /* DetailMovieViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E3F86EC266EFA95001B8AEE /* DetailMovieViewController.xib */; };
+		9E3F86F3266EFB60001B8AEE /* DetailMovieRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F86F2266EFB60001B8AEE /* DetailMovieRouter.swift */; };
+		9E3F86F8266EFC7A001B8AEE /* MovieRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3F86F7266EFC7A001B8AEE /* MovieRouter.swift */; };
 		A7F7B5D7B3366301CE4BB204 /* Pods_MovieDBTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF40B503A053E857E6830709 /* Pods_MovieDBTests.framework */; };
 		E056F4CF9290DC04AE190EA4 /* Pods_MovieDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C8A2F0893088A1A810EC2D1 /* Pods_MovieDB.framework */; };
 /* End PBXBuildFile section */
@@ -134,6 +140,12 @@
 		9E3F86A3266EE6D1001B8AEE /* RemoveFavoriteInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveFavoriteInteractor.swift; sourceTree = "<group>"; };
 		9E3F86A8266EE711001B8AEE /* FavoriteMovieInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMovieInteractor.swift; sourceTree = "<group>"; };
 		9E3F86AD266EE765001B8AEE /* LocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataSource.swift; sourceTree = "<group>"; };
+		9E3F86D9266EF77E001B8AEE /* DetailMoviePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMoviePresenter.swift; sourceTree = "<group>"; };
+		9E3F86DE266EF81F001B8AEE /* DetailMovieInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMovieInteractor.swift; sourceTree = "<group>"; };
+		9E3F86EB266EFA95001B8AEE /* DetailMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMovieViewController.swift; sourceTree = "<group>"; };
+		9E3F86EC266EFA95001B8AEE /* DetailMovieViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailMovieViewController.xib; sourceTree = "<group>"; };
+		9E3F86F2266EFB60001B8AEE /* DetailMovieRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMovieRouter.swift; sourceTree = "<group>"; };
+		9E3F86F7266EFC7A001B8AEE /* MovieRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRouter.swift; sourceTree = "<group>"; };
 		9E925DE4256490A895F4413E /* Pods-MovieDB.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieDB.debug.xcconfig"; path = "Target Support Files/Pods-MovieDB/Pods-MovieDB.debug.xcconfig"; sourceTree = "<group>"; };
 		AF40B503A053E857E6830709 /* Pods_MovieDBTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieDBTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA2885E8D129572D25D15389 /* Pods-MovieDB-MovieDBUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieDB-MovieDBUITests.release.xcconfig"; path = "Target Support Files/Pods-MovieDB-MovieDBUITests/Pods-MovieDB-MovieDBUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -343,6 +355,7 @@
 				9E3F869E266EE67D001B8AEE /* AddFavoriteInteractor.swift */,
 				9E3F86A3266EE6D1001B8AEE /* RemoveFavoriteInteractor.swift */,
 				9E3F86A8266EE711001B8AEE /* FavoriteMovieInteractor.swift */,
+				9E3F86DE266EF81F001B8AEE /* DetailMovieInteractor.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -379,7 +392,6 @@
 			isa = PBXGroup;
 			children = (
 				9E3F84BB266DCA12001B8AEE /* Presenter */,
-				9E3F84BA266DCA12001B8AEE /* Router */,
 				9E3F84B9266DCA12001B8AEE /* View */,
 			);
 			path = Search;
@@ -442,6 +454,8 @@
 		9E3F84B6266DCA0A001B8AEE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				9E3F86EB266EFA95001B8AEE /* DetailMovieViewController.swift */,
+				9E3F86EC266EFA95001B8AEE /* DetailMovieViewController.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -449,6 +463,7 @@
 		9E3F84B7266DCA0A001B8AEE /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				9E3F86F2266EFB60001B8AEE /* DetailMovieRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -456,6 +471,7 @@
 		9E3F84B8266DCA0A001B8AEE /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				9E3F86D9266EF77E001B8AEE /* DetailMoviePresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -468,13 +484,6 @@
 				9E3F868C266E60CA001B8AEE /* ResultTitleCell.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		9E3F84BA266DCA12001B8AEE /* Router */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Router;
 			sourceTree = "<group>";
 		};
 		9E3F84BB266DCA12001B8AEE /* Presenter */ = {
@@ -518,6 +527,7 @@
 		9E3F84C2266DCA2D001B8AEE /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				9E3F86F7266EFC7A001B8AEE /* MovieRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -692,6 +702,7 @@
 			files = (
 				9E3F8449266DBB56001B8AEE /* LaunchScreen.storyboard in Resources */,
 				9E3F863D266E33C5001B8AEE /* BannerCell.xib in Resources */,
+				9E3F86EE266EFA95001B8AEE /* DetailMovieViewController.xib in Resources */,
 				9E3F85FB266E1A83001B8AEE /* MovieItemCell.xib in Resources */,
 				9E3F8446266DBB56001B8AEE /* Assets.xcassets in Resources */,
 				9E3F8694266E6670001B8AEE /* AboutViewController.xib in Resources */,
@@ -846,6 +857,7 @@
 				9E3F8624266E29BE001B8AEE /* TopRatedInteractor.swift in Sources */,
 				9E3F854C266DF768001B8AEE /* RemoteDataSource.swift in Sources */,
 				9E3F861F266E2990001B8AEE /* PopularInteractor.swift in Sources */,
+				9E3F86DF266EF81F001B8AEE /* DetailMovieInteractor.swift in Sources */,
 				9E3F868D266E60CA001B8AEE /* ResultTitleCell.swift in Sources */,
 				9E3F85A7266E0BB2001B8AEE /* Movie.swift in Sources */,
 				9E3F8647266E4D11001B8AEE /* SearchMovieInteractor.swift in Sources */,
@@ -853,6 +865,7 @@
 				9E3F86A4266EE6D1001B8AEE /* RemoveFavoriteInteractor.swift in Sources */,
 				9E3F85D4266E16F3001B8AEE /* MovieListCell.swift in Sources */,
 				9E3F8633266E3289001B8AEE /* MoviesBannerCell.swift in Sources */,
+				9E3F86DA266EF77E001B8AEE /* DetailMoviePresenter.swift in Sources */,
 				9E3F8651266E52BA001B8AEE /* SearchTextField.swift in Sources */,
 				9E3F86A9266EE711001B8AEE /* FavoriteMovieInteractor.swift in Sources */,
 				9E3F864C266E4F40001B8AEE /* SearchPresenter.swift in Sources */,
@@ -861,9 +874,11 @@
 				9E3F863C266E33C5001B8AEE /* BannerCell.swift in Sources */,
 				9E3F853A266DF546001B8AEE /* Genre.swift in Sources */,
 				9E3F8544266DF603001B8AEE /* MovieRepository.swift in Sources */,
+				9E3F86F8266EFC7A001B8AEE /* MovieRouter.swift in Sources */,
 				9E3F84EA266DDA35001B8AEE /* UIImage.swift in Sources */,
 				9E3F85FA266E1A83001B8AEE /* MovieItemCell.swift in Sources */,
 				9E3F8511266DE2A2001B8AEE /* UIViewController.swift in Sources */,
+				9E3F86ED266EFA95001B8AEE /* DetailMovieViewController.swift in Sources */,
 				9E3F84D5266DD7C8001B8AEE /* MoviesViewController.swift in Sources */,
 				9E3F84D0266DCD42001B8AEE /* Injection.swift in Sources */,
 				9E3F85A2266E083E001B8AEE /* MovieGenreHeaderView.swift in Sources */,
@@ -875,6 +890,7 @@
 				9E3F869F266EE67D001B8AEE /* AddFavoriteInteractor.swift in Sources */,
 				9E3F848F266DBEB9001B8AEE /* HomeRouter.swift in Sources */,
 				9E3F8693266E6670001B8AEE /* AboutViewController.swift in Sources */,
+				9E3F86F3266EFB60001B8AEE /* DetailMovieRouter.swift in Sources */,
 				9E3F8617266E2035001B8AEE /* ImageURLTransform.swift in Sources */,
 				9E3F8556266DF909001B8AEE /* MoviePresenter.swift in Sources */,
 				9E3F862E266E311E001B8AEE /* TrendingInteractor.swift in Sources */,

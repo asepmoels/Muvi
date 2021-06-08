@@ -18,6 +18,7 @@ class MoviesBannerCell: UITableViewCell, Reusable {
       collectionView.reloadData()
     }
   }
+  var selectionHandler: ((Movie) -> Void)?
 
   deinit {
     stopTimer()
@@ -96,5 +97,10 @@ extension MoviesBannerCell: UICollectionViewDataSource {
 }
 
 extension MoviesBannerCell: UICollectionViewDelegate {
-
+  func collectionView(_ collectionView: UICollectionView,
+                      didSelectItemAt indexPath: IndexPath) {
+    if let movie = items?[indexPath.row] {
+      selectionHandler?(movie)
+    }
+  }
 }

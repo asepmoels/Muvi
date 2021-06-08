@@ -18,4 +18,5 @@ protocol MovieRepositoryProtocol {
   func addFavorite(movie: Movie) -> Observable<Movie>
   func removeFavorite(movie: Movie) -> Observable<Movie>
   func getFavorites(keyword: String) -> Observable<[Movie]>
+  func getDetailMovie(movieId: String) -> Observable<Movie>
 }

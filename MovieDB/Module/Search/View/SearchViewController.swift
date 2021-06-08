@@ -14,13 +14,16 @@ import RxRelay
 
 class SearchViewController: UIViewController {
   private let disposeBag = DisposeBag()
+  private let router: MovieRouter
   private let presenter: SearchPresenter
   private let collectionView = UICollectionView(frame: CGRect.zero,
                                                 collectionViewLayout: UICollectionViewFlowLayout())
   private let searchBar = SearchTextField()
 
-  init(presenter: SearchPresenter) {
+  init(router: MovieRouter,
+       presenter: SearchPresenter) {
     self.presenter = presenter
+    self.router = router
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -127,5 +130,11 @@ extension SearchViewController: UICollectionViewDelegate {
     let header: ResultTitleCell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, for: indexPath)
     header.text = searchBar.text ?? ""
     return header
+  }
+
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    if let item = presenter.movies.value?[indexPath.row] {
+      router.routeToDetail(from: self, movie: item)
+    }
   }
 }

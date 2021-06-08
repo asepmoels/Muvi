@@ -8,6 +8,7 @@
 import Foundation
 import ObjectMapper
 import RealmSwift
+import ObjectMapper_Realm
 
 struct MovieResponse: Mappable {
   var totalResults: Int?
@@ -76,7 +77,7 @@ class MovieEntity: Object, Movie, Mappable {
     budget <- map["budget"]
     voteAverage <- map["vote_average"]
     status <- map["status"]
-    dataGenres <- map["genres"]
+    dataGenres <- (map["genres"], ListTransform<GenreEntity>())
     title <- map["title"]
     identifier <- map["id"]
     video <- map["video"]

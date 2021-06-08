@@ -53,4 +53,8 @@ struct MovieRepository: MovieRepositoryProtocol {
   func getFavorites(keyword: String) -> Observable<[Movie]> {
     localDataSource.getFavorites(keyword: keyword)
   }
+
+  func getDetailMovie(movieId: String) -> Observable<Movie> {
+    remoteDataSource.getDetail(movieId: movieId)
+  }
 }

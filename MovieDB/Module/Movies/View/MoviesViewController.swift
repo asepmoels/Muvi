@@ -12,10 +12,13 @@ import SnapKit
 
 class MoviesViewController: UIViewController {
   private let disposeBag = DisposeBag()
+  private let router: MovieRouter
   private let presenter: MoviePresenter
   private let tableView = UITableView(frame: CGRect.zero, style: .grouped)
 
-  init(presenter: MoviePresenter) {
+  init(router: MovieRouter,
+       presenter: MoviePresenter) {
+    self.router = router
     self.presenter = presenter
     super.init(nibName: nil, bundle: nil)
   }
@@ -101,6 +104,10 @@ extension MoviesViewController: UITableViewDataSource {
     if presenter.homeContents[indexPath.section] == .banner {
       let cell: MoviesBannerCell = tableView.dequeueReusableCell(for: indexPath)
       cell.items = presenter.trendings.value
+      cell.selectionHandler = { [weak self] movie in
+        guard let self = self else { return }
+        self.router.routeToDetail(from: self, movie: movie)
+      }
       return cell
     }
 
@@ -117,7 +124,10 @@ extension MoviesViewController: UITableViewDataSource {
     default:
       break
     }
-
+    cell.selectionHandler = { [weak self] movie in
+      guard let self = self else { return }
+      self.router.routeToDetail(from: self, movie: movie)
+    }
     return cell
   }
 }

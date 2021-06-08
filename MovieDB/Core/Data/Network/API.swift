@@ -16,6 +16,7 @@ enum API {
   case upcoming
   case trending
   case search(query: String)
+  case detailMovie(movieId: String)
 }
 
 extension API: TargetType {
@@ -37,6 +38,8 @@ extension API: TargetType {
       return "trending/movie/day"
     case .search:
       return "search/movie"
+    case .detailMovie(let movieId):
+      return "movie/\(movieId)"
     }
   }
 
