@@ -24,7 +24,9 @@ pod 'EmptyDataSet-Swift'
 
   target 'MovieDBTests' do
     inherit! :search_paths
-    # Pods for testing
+
+pod 'RxBlocking'
+
   end
 
   target 'MovieDBUITests' do

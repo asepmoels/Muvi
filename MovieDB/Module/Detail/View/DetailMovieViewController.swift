@@ -74,6 +74,11 @@ class DetailMovieViewController: UIViewController {
     presenter.movie.subscribe { [weak self] _ in
       self?.updateContent()
     }.disposed(by: disposeBag)
+
+    presenter.error.subscribe(onNext: { [weak self] (error) in
+      guard let theError = error else { return }
+      self?.handleError(error: theError)
+    }).disposed(by: disposeBag)
   }
 
   private func updateContent() {

@@ -105,6 +105,11 @@ class FavoriteViewController: UIViewController {
     presenter.movie.subscribe { [weak self] _ in
       self?.presenter.getFavoriteMovies(keyword: self?.searchBar.text ?? "")
     }.disposed(by: disposeBag)
+
+    presenter.error.subscribe(onNext: { [weak self] (error) in
+      guard let theError = error else { return }
+      self?.handleError(error: theError)
+    }).disposed(by: disposeBag)
   }
 
   private func confirmRemoveFavorite(movie: Movie) {

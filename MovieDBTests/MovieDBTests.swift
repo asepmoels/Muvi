@@ -7,27 +7,71 @@
 
 import XCTest
 @testable import MovieDB
+import RxBlocking
+import RxSwift
+import Swinject
 
 class MovieDBTests: XCTestCase {
+  override func setUpWithError() throws {
+  }
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+  override func tearDownWithError() throws {
+  }
+
+  func testNowPlayingUseCase() throws {
+    let useCase: NowPlayingUseCase = TestInjection().resolve()
+    let stream = useCase.getNowPlaying()
+    let result = try? stream.toBlocking().last()
+
+    XCTAssertEqual(result?.count, 2)
+    XCTAssertEqual(result?.compactMap({ $0.title }), ["Now You See Me", "Ironman 3"])
+  }
+
+  func testTrendingUseCase() throws {
+    let useCase: TrendingUseCase = TestInjection().resolve()
+    let stream = useCase.getTrending()
+    let result = try? stream.toBlocking().last()
+
+    XCTAssertEqual(result?.count, 2)
+    XCTAssertEqual(result?.compactMap({ $0.title }), ["Now You See Me", "Ironman 3"])
+  }
+
+  func testSearchMovieUseCase() throws {
+    let useCase: SearchMovieUseCase = TestInjection().resolve()
+    let stream = useCase.searchMovie(keyword: "you")
+    let result = try? stream.toBlocking().last()
+
+    XCTAssertEqual(result?.count, 2)
+    XCTAssertEqual(result?.compactMap({ $0.title }), ["Now You See Me", "Ironman 3"])
+  }
+
+  func testDetailMovieUseCase() throws {
+    let useCase: DetailMovieUseCase = TestInjection().resolve()
+    let stream = useCase.getDetail(movieId: "10")
+    let result = try? stream.toBlocking().last()
+
+    XCTAssertEqual(result?.title, "Now You See Me")
+    XCTAssertEqual(result?.identifier, 10)
+  }
+}
+
+class TestInjection: Injection {
+  private let container = Container()
+
+  override init() {
+    super.init()
+    container.register(RemoteDataSourceProtocol.self) { (_) in
+      DummyRemoteDataSource()
     }
+  }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+  override func resolve<T>() -> T {
+    if T.self == RemoteDataSourceProtocol.self {
+      guard let result = container.resolve(T.self) else {
+        fatalError("This type is not registered: \(T.self)")
+      }
+      return result
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
+    return super.resolve()
+  }
 }

@@ -111,6 +111,11 @@ class SearchViewController: UIViewController {
     presenter.movies.subscribe { [weak self] _ in
       self?.collectionView.reloadData()
     }.disposed(by: disposeBag)
+
+    presenter.error.subscribe(onNext: { [weak self] (error) in
+      guard let theError = error else { return }
+      self?.handleError(error: theError)
+    }).disposed(by: disposeBag)
   }
 }
 

@@ -41,4 +41,15 @@ enum ApiError: Error {
   case networkFailure(error: Error)
   case invalidResponse(responseString: String)
   case failedMapping(json: [String: Any])
+
+  var localizedDescription: String {
+    switch self {
+    case .networkFailure(let error):
+      return error.localizedDescription
+    case .invalidResponse(let responseString):
+      return "Invalid response: \(responseString)"
+    case .failedMapping:
+      return "Failed mapping object"
+    }
+  }
 }
