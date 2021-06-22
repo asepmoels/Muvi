@@ -16,7 +16,7 @@ public struct MoviesRemoteDataSource: DataSource {
 
   private let dispose = DisposeBag()
 
-  public init(){}
+  public init() {}
 
   public func execute(request: Int?) -> Observable<[Movie]> {
     let api: API
@@ -42,7 +42,7 @@ public struct MoviesRemoteDataSource: DataSource {
     .map({ $0.results ?? [] })
     .bind(to: result)
     .disposed(by: dispose)
-    
+
     return result.asObservable()
   }
 }

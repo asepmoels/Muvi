@@ -24,14 +24,14 @@ where
   private let localDataSource: LocalMovieDataSource
 
   public init(remoteDataSource: MovieDataSource,
-       localDataSource: LocalMovieDataSource) {
+              localDataSource: LocalMovieDataSource) {
     self.remoteDataSource = remoteDataSource
     self.localDataSource = localDataSource
   }
 
   public func execute(request: Int?) -> Observable<Movie> {
     let result = ReplaySubject<Movie>.createUnbounded()
-    let saved = localDataSource.get(id: request ?? 0)
+    let saved = localDataSource.get(entityId: request ?? 0)
     remoteDataSource.execute(request: request)
       .subscribe(onNext: { movie in
         var newMovie = movie

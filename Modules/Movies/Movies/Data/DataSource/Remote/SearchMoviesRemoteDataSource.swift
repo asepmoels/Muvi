@@ -16,7 +16,7 @@ public struct SearchMoviesRemoteDataSource: DataSource {
 
   private let disposeBag = DisposeBag()
 
-  public init(){ }
+  public init() {}
 
   public func execute(request: String?) -> Observable<[Movie]> {
     let result = ReplayRelay<[Movie]>.createUnbound()

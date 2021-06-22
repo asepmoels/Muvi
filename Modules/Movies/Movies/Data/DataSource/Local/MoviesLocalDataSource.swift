@@ -51,8 +51,8 @@ public struct MoviesLocalDataSource: LocaleDataSource {
     ReplaySubject<Movie>.createUnbounded()
   }
 
-  public func get(id: Int) -> Movie? {
-    savedMovie(with: id)
+  public func get(entityId: Int) -> Movie? {
+    savedMovie(with: entityId)
   }
 
   private func savedMovie(with movieId: Int) -> MovieEntity? {

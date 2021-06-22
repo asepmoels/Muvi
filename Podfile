@@ -45,11 +45,6 @@ target 'MovieDB' do
   end
 end
 
-target 'Core' do
-  project 'Modules/Core/Core'
-  core_dependency
-end
-
 target 'Common' do
   project 'Modules/Common/Common'
 end

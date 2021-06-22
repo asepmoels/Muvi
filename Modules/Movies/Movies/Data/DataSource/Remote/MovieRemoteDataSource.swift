@@ -16,7 +16,7 @@ public struct MovieRemoteDataSource: DataSource {
 
   private let disposeBag = DisposeBag()
 
-  public init(){ }
+  public init() {}
 
   public func execute(request: Int?) -> Observable<Movie> {
     NetworkService.shared.connect(

@@ -8,9 +8,6 @@
       location = "group:Modules/Common/Common.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Modules/Core/Core.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Modules/Movies/Movies.xcodeproj">
    </FileRef>
    <FileRef
