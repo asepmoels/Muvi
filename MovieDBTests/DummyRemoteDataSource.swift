@@ -10,6 +10,10 @@ import RxSwift
 @testable import Core
 @testable import Movies
 
+enum NetworkError: Error {
+  case internalServerError
+}
+
 struct DummyRemoteDataSource: DataSource {
   typealias Request = Int
   typealias Response = [Movie]
@@ -32,6 +36,12 @@ struct DummyRemoteDataSource: DataSource {
     ].compactMap({ MovieEntity(JSON: $0) })
     result.onNext(objects)
     result.onCompleted()
+    return result.compactMap({ $0 })
+  }
+
+  private func createErrorResponse() -> Observable<[Movie]> {
+    let result = ReplaySubject<[MovieEntity]>.createUnbounded()
+    result.onError(ApiError.networkFailure(error: NetworkError.internalServerError))
     return result.compactMap({ $0 })
   }
 }

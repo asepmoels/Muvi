@@ -11,7 +11,6 @@ import XCTest
 @testable import Core
 import RxBlocking
 import RxSwift
-import Swinject
 
 typealias DummyInteractorType = Interactor<
   Int, [Movie], MoviesByGroupRepository<
@@ -34,28 +33,19 @@ class MovieDBTests: XCTestCase {
     XCTAssertEqual(result?.count, 2)
     XCTAssertEqual(result?.compactMap({ $0.title }), ["Now You See Me", "Ironman 3"])
   }
-}
 
-class TestInjection: Injection {
-  private let container = Container()
+  func testNetworkError() throws {
+    let useCase: DummyInteractorType = TestInjection().resolve()
+    let stream = useCase.execute(request: 10)
 
-  override init() {
-    super.init()
-    container.register(DummyInteractorType.self) { [unowned self] _ in
-      Interactor(repository: self.resolve())
+    XCTAssertThrowsError(try stream.toBlocking().last()) { error in
+      guard let theError = error as? ApiError,
+            case ApiError.networkFailure(let netError) = theError,
+            let serverError = netError as? NetworkError else {
+        XCTAssert(false)
+        return
+      }
+      XCTAssertEqual(serverError, NetworkError.internalServerError)
     }
-    container.register(MoviesByGroupRepository<DummyRemoteDataSource>.self) { [unowned self] _ in
-      MoviesByGroupRepository(remoteDataSource: self.resolve())
-    }
-    container.register(DummyRemoteDataSource.self) { _ in
-      DummyRemoteDataSource()
-    }
-  }
-
-  override func resolve<T>() -> T {
-    guard let result = container.resolve(T.self) else {
-      return super.resolve()
-    }
-    return result
   }
 }
