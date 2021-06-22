@@ -7,9 +7,17 @@
 
 import XCTest
 @testable import MovieDB
+@testable import Movies
+@testable import Core
 import RxBlocking
 import RxSwift
 import Swinject
+
+typealias DummyInteractorType = Interactor<
+  Int, [Movie], MoviesByGroupRepository<
+    DummyRemoteDataSource
+  >
+>
 
 class MovieDBTests: XCTestCase {
   override func setUpWithError() throws {
@@ -18,40 +26,13 @@ class MovieDBTests: XCTestCase {
   override func tearDownWithError() throws {
   }
 
-  func testNowPlayingUseCase() throws {
-    let useCase: NowPlayingUseCase = TestInjection().resolve()
-    let stream = useCase.getNowPlaying()
-    let result = try? stream.toBlocking().last()
-
-    XCTAssertEqual(result?.count, 2)
-    XCTAssertEqual(result?.compactMap({ $0.title }), ["Now You See Me", "Ironman 3"])
-  }
-
   func testTrendingUseCase() throws {
-    let useCase: TrendingUseCase = TestInjection().resolve()
-    let stream = useCase.getTrending()
+    let useCase: DummyInteractorType = TestInjection().resolve()
+    let stream = useCase.execute(request: 0)
     let result = try? stream.toBlocking().last()
 
     XCTAssertEqual(result?.count, 2)
     XCTAssertEqual(result?.compactMap({ $0.title }), ["Now You See Me", "Ironman 3"])
-  }
-
-  func testSearchMovieUseCase() throws {
-    let useCase: SearchMovieUseCase = TestInjection().resolve()
-    let stream = useCase.searchMovie(keyword: "you")
-    let result = try? stream.toBlocking().last()
-
-    XCTAssertEqual(result?.count, 2)
-    XCTAssertEqual(result?.compactMap({ $0.title }), ["Now You See Me", "Ironman 3"])
-  }
-
-  func testDetailMovieUseCase() throws {
-    let useCase: DetailMovieUseCase = TestInjection().resolve()
-    let stream = useCase.getDetail(movieId: "10")
-    let result = try? stream.toBlocking().last()
-
-    XCTAssertEqual(result?.title, "Now You See Me")
-    XCTAssertEqual(result?.identifier, 10)
   }
 }
 
@@ -60,18 +41,21 @@ class TestInjection: Injection {
 
   override init() {
     super.init()
-    container.register(RemoteDataSourceProtocol.self) { (_) in
+    container.register(DummyInteractorType.self) { [unowned self] _ in
+      Interactor(repository: self.resolve())
+    }
+    container.register(MoviesByGroupRepository<DummyRemoteDataSource>.self) { [unowned self] _ in
+      MoviesByGroupRepository(remoteDataSource: self.resolve())
+    }
+    container.register(DummyRemoteDataSource.self) { _ in
       DummyRemoteDataSource()
     }
   }
 
   override func resolve<T>() -> T {
-    if T.self == RemoteDataSourceProtocol.self {
-      guard let result = container.resolve(T.self) else {
-        fatalError("This type is not registered: \(T.self)")
-      }
-      return result
+    guard let result = container.resolve(T.self) else {
+      return super.resolve()
     }
-    return super.resolve()
+    return result
   }
 }
