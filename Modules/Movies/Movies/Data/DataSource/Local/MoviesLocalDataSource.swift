@@ -28,8 +28,16 @@ public struct MoviesLocalDataSource: LocaleDataSource {
         .sorted(byKeyPath: "title")
       var movies = [MovieEntity]()
       all.forEach { (movie) in
+        let searchableValue = [
+          movie.title,
+          movie.description,
+          movie.overview,
+          movie.genres.map({ $0.name }).joined(separator: " "),
+          movie.casts?.map({ $0.name }).joined(separator: " ") ?? ""
+        ]
         if (!keyword.isEmpty &&
-              movie.title.lowercased().contains(keyword.lowercased())) ||
+              searchableValue.joined(separator: " ").lowercased()
+              .contains(keyword.lowercased())) ||
             keyword.isEmpty {
           movies.append(movie)
         }
