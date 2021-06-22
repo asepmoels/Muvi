@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  Common
+
+  Created by Asep Mulyana on 22/06/21.
+  
+*/
+"now_playing" = "Now Playing";
+"top_rated" = "Top Rated";
+"popular" = "Popular";
+"upcoming" = "Upcoming";
+"search" = "Search";
+"search_description" = "Begin to search the great movie here";
+"not_found" = "Not Found";
+"not_found_description" = "Sorry, we are unable to find the movie you want.";
+"empty" = "Empty";
+"empty_favorite" = "You have no favorite movie for now.";
+"about" = "About";
+"this" = "This";
+"application" = "Application";
+"made_by" = "is made by";
+"are_you_sure" = "Are you sure?";
+"delete_confirm" = "This action will remove %@ movie from you favorite";
+"cancel" = "Cancel";
+"yes_remove" = "Yes, Remove";

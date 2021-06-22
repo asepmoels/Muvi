@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  Common
+
+  Created by Asep Mulyana on 22/06/21.
+  
+*/
+"now_playing" = "Sedang Diputar";
+"top_rated" = "Rating Tinggi";
+"popular" = "Populer";
+"upcoming" = "Akan Datang";
+"search" = "Cari";
+"search_description" = "Mulai cari film bagus disini";
+"not_found" = "Tidak Ditemukan";
+"not_found_description" = "Maaf, kami tidak dapat menemukan film yang ada inginkan.";
+"empty" = "Kosong";
+"empty_favorite" = "Film favorit kamu masih kosong.";
+"about" = "Tentang";
+"this" = "Aplikasi";
+"application" = "Ini";
+"made_by" = "dibuat oleh";
+"are_you_sure" = "Apakah Anda Yakin?";
+"delete_confirm" = "Anda akan menghapus film %@ dari daftar favorit";
+"cancel" = "Batal";
+"yes_remove" = "Ya, Hapus";

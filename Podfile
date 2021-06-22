@@ -41,17 +41,17 @@ target 'MovieDB' do
 
   target 'Movies' do
     use_modular_headers!
-    project '../Modules/Movies/Movies'
+    project 'Modules/Movies/Movies'
   end
 end
 
 target 'Core' do
-  project '../Modules/Core/Core'
+  project 'Modules/Core/Core'
   core_dependency
 end
 
 target 'Common' do
-  project '../Modules/Common/Common'
+  project 'Modules/Common/Common'
 end
 
 post_install do |pi|

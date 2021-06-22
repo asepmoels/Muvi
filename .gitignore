@@ -221,3 +221,4 @@ Framework
 .Cartfile
 .Cartfile.resolved
 Pods/*
+Modules/Core
