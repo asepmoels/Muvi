@@ -24,6 +24,12 @@ typealias DummySearchInteractorType = Interactor<
   >
 >
 
+typealias AddFavoritInteractorType = Interactor<
+  Movie, Movie, AddFavoriteRepository<
+    MovieLocalDataSource
+  >
+>
+
 class MovieDBTests: XCTestCase {
   override func setUpWithError() throws {
   }
@@ -77,5 +83,18 @@ class MovieDBTests: XCTestCase {
       }
       XCTAssertEqual(theError, QueryError.emptyQuery)
     }
+  }
+
+  func testTheRealFavoriteUseCase() throws {
+    // testing real interactor / use case
+    let movie = MovieEntity(JSON: ["id": 90, "title": "Markzero"])
+    let useCase: AddFavoritInteractorType = TestInjection().resolve()
+
+    XCTAssertEqual(movie?.isFavorite, false, "The movie must be not favorited")
+
+    let stream = useCase.execute(request: movie)
+    let result = try? stream.toBlocking().last()
+
+    XCTAssertEqual(result?.isFavorite, true, "The movie is now must be favorited")
   }
 }
