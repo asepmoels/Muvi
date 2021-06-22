@@ -153,14 +153,14 @@ extension SearchViewController: UICollectionViewDelegate {
 extension SearchViewController: EmptyDataSetSource {
   func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
     searchBar.text?.isEmpty ?? false ?
-      NSAttributedString(string: "Search") :
-      NSAttributedString(string: "Not Found")
+      NSAttributedString(string: "search".localized()) :
+      NSAttributedString(string: "not_found".localized())
   }
 
   func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
     searchBar.text?.isEmpty ?? false ?
-      NSAttributedString(string: "Begin to search the great movie here") :
-      NSAttributedString(string: "Sorry, we are unable to find the movie you want.")
+      NSAttributedString(string: "search_description".localized()) :
+      NSAttributedString(string: "not_found_description".localized())
   }
 
   func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {

@@ -11,13 +11,14 @@ import SVProgressHUD
 import SnapKit
 import Core
 import Movies
+import Common
 
 enum HomeContent: String, CaseIterable {
   case banner
-  case nowPlaying = "Now Playing"
-  case topRated = "Top Rated"
-  case popular = "Popular"
-  case upcoming = "Upcoming"
+  case nowPlaying = "now_playing"
+  case topRated = "top_rated"
+  case popular = "popular"
+  case upcoming = "upcoming"
 }
 
 typealias MoviesPresenterType = GetGoupedListPresenter<
@@ -125,7 +126,7 @@ extension MoviesViewController: UITableViewDataSource {
 extension MoviesViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let header = tableView.dequeueReusableHeaderFooterView(MovieGenreHeaderView.self)
-    header?.titleLabel.text = HomeContent.allCases[section].rawValue
+    header?.titleLabel.text = HomeContent.allCases[section].rawValue.localized()
     return header
   }
 

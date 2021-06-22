@@ -9,8 +9,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AboutViewController" customModule="MovieDB" customModuleProvider="target">
             <connections>
+                <outlet property="applicationLabel" destination="bth-VI-7f6" id="YWb-8m-SrM"/>
                 <outlet property="fotoImage" destination="xUZ-qS-UfJ" id="rSv-E2-9Cs"/>
                 <outlet property="logoImage" destination="2LA-gr-WAF" id="cAv-wp-K09"/>
+                <outlet property="madeLabel" destination="xma-qU-EHJ" id="C5g-sf-eXX"/>
+                <outlet property="thisLabel" destination="oAM-E7-acy" id="m1j-uX-s5I"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

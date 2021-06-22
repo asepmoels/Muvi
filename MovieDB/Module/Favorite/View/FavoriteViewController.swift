@@ -122,11 +122,11 @@ class FavoriteViewController: UIViewController {
 
   private func confirmRemoveFavorite(movie: Movie) {
     let alert = UIAlertController(
-      title: "Are you sure?",
-      message: "This action will remove \(movie.title) movie from you favorite",
+      title: "are_you_sure".localized(),
+      message: String(format: "delete_confirm".localized(), movie.title),
       preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-    alert.addAction(UIAlertAction(title: "Yes, Remove",
+    alert.addAction(UIAlertAction(title: "cancel".localized(), style: .cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: "yes_remove".localized(),
                                   style: .destructive,
                                   handler: { [weak self] _ in
                                     self?.removeFavoritePresenter.getItem(request: movie)
@@ -161,14 +161,14 @@ extension FavoriteViewController: UITableViewDelegate {
 extension FavoriteViewController: EmptyDataSetSource {
   func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
     searchBar.text?.isEmpty ?? false ?
-      NSAttributedString(string: "Empty") :
-      NSAttributedString(string: "Not Found")
+      NSAttributedString(string: "empty".localized()) :
+      NSAttributedString(string: "not_found".localized())
   }
 
   func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
     searchBar.text?.isEmpty ?? false ?
-      NSAttributedString(string: "You have no favorite movie for now.") :
-      NSAttributedString(string: "Sorry, no matched movie in your favorite list.")
+      NSAttributedString(string: "empty_favorite".localized()) :
+      NSAttributedString(string: "not_found_description".localized())
   }
 
   func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {

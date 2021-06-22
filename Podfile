@@ -7,8 +7,6 @@ def core_dependency
   pod 'RxSwift'
   pod 'RxRelay'
   pod 'RxCocoa', '6.1.0'
-  pod 'Alamofire'
-  pod 'ObjectMapper'
 end
 
 target 'MovieDB' do
@@ -26,6 +24,9 @@ target 'MovieDB' do
   pod 'EmptyDataSet-Swift'
   pod 'ObjectMapper+Realm'
   pod 'RealmSwift', '10.7.6'
+  pod 'Alamofire'
+  pod 'ObjectMapper'
+  pod 'Core', :source => "https://code.nbs.co.id/nbsengineering/specs.git"
 
   # Pods for MovieDB
 

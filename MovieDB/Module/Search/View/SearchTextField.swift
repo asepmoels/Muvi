@@ -27,7 +27,7 @@ class SearchTextField: UITextField {
     tintColor = .white
     textColor = UIColor.white.withAlphaComponent(0.85)
     returnKeyType = .done
-    attributedPlaceholder = NSAttributedString(string: "Search",
+    attributedPlaceholder = NSAttributedString(string: "search".localized(),
                                                attributes: [
                                                 NSAttributedString.Key.foregroundColor: UIColor.gray
                                                ])
