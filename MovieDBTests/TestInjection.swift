@@ -15,6 +15,11 @@ class TestInjection: Injection {
 
   override init() {
     super.init()
+    registerDummyDataSource()
+    registerDummySearchDataSource()
+  }
+
+  private func registerDummyDataSource() {
     container.register(DummyInteractorType.self) { [unowned self] _ in
       Interactor(repository: self.resolve())
     }
@@ -23,6 +28,18 @@ class TestInjection: Injection {
     }
     container.register(DummyRemoteDataSource.self) { _ in
       DummyRemoteDataSource()
+    }
+  }
+
+  private func registerDummySearchDataSource() {
+    container.register(DummySearchInteractorType.self) { [unowned self] _ in
+      Interactor(repository: self.resolve())
+    }
+    container.register(MoviesRepository<DumySearchRemoteDataSource>.self) { [unowned self] _ in
+      MoviesRepository(remoteDataSource: self.resolve())
+    }
+    container.register(DumySearchRemoteDataSource.self) { _ in
+      DumySearchRemoteDataSource()
     }
   }
 

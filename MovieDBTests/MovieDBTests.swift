@@ -18,6 +18,12 @@ typealias DummyInteractorType = Interactor<
   >
 >
 
+typealias DummySearchInteractorType = Interactor<
+  String, [Movie], MoviesRepository<
+    DumySearchRemoteDataSource
+  >
+>
+
 class MovieDBTests: XCTestCase {
   override func setUpWithError() throws {
   }
@@ -47,5 +53,19 @@ class MovieDBTests: XCTestCase {
       }
       XCTAssertEqual(serverError, NetworkError.internalServerError)
     }
+  }
+
+  func testSearchUseCase() throws {
+    let useCase: DummySearchInteractorType = TestInjection().resolve()
+    let stream = useCase.execute(request: "a")
+    let result = try? stream.toBlocking().last()
+
+    XCTAssert(result?.count ?? 0 > 0, "Should be found movie with title that include a")
+
+    let query = "aw234wer"
+    let streamZero = useCase.execute(request: query)
+    let resultZero = try? streamZero.toBlocking().last()
+
+    XCTAssert(resultZero?.count ?? 0 == 0, "Should be not found movie with title that include \(query)")
   }
 }
