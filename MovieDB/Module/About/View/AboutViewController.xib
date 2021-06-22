@@ -9,6 +9,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AboutViewController" customModule="MovieDB" customModuleProvider="target">
             <connections>
+                <outlet property="fotoImage" destination="xUZ-qS-UfJ" id="rSv-E2-9Cs"/>
+                <outlet property="logoImage" destination="2LA-gr-WAF" id="cAv-wp-K09"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,8 +29,12 @@
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_navbar" translatesAutoresizingMaskIntoConstraints="NO" id="2LA-gr-WAF">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2LA-gr-WAF">
                     <rect key="frame" x="148" y="139" width="118" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="23" id="AL1-ks-XbC"/>
+                        <constraint firstAttribute="width" constant="118" id="wkb-ZM-JwA"/>
+                    </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Application" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bth-VI-7f6">
                     <rect key="frame" x="170.5" y="170" width="73" height="17"/>
@@ -42,7 +48,7 @@
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="foto" translatesAutoresizingMaskIntoConstraints="NO" id="xUZ-qS-UfJ">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xUZ-qS-UfJ">
                     <rect key="frame" x="115" y="278" width="184" height="184"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="184" id="0Io-Ln-cvM"/>
@@ -99,8 +105,4 @@
             <point key="canvasLocation" x="137.68115942028987" y="68.973214285714278"/>
         </view>
     </objects>
-    <resources>
-        <image name="foto" width="280" height="280"/>
-        <image name="logo_navbar" width="118" height="22.5"/>
-    </resources>
 </document>

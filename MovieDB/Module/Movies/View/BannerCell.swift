@@ -8,6 +8,7 @@
 import UIKit
 import Reusable
 import SDWebImage
+import Movies
 
 class BannerCell: UICollectionViewCell, NibReusable {
   @IBOutlet weak var imageView: UIImageView!

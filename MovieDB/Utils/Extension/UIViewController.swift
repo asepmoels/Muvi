@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Core
+import SVProgressHUD
 
 extension UIViewController {
   func setupTheme() {
@@ -28,5 +30,20 @@ extension UIViewController {
                                   preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
     present(alert, animated: true, completion: nil)
+  }
+
+  func handleDataState<T>(state: DataState<T>, onLoaded: (() -> Void)) {
+    SVProgressHUD.dismiss()
+    switch state {
+    case .loading:
+      SVProgressHUD.show()
+    case .loaded,
+         .empty:
+      onLoaded()
+    case .failed(let error):
+      handleError(error: error)
+    default:
+      break
+    }
   }
 }

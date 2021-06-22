@@ -12,6 +12,7 @@
                 <outlet property="castsCollectionView" destination="UzX-fU-XWb" id="NF8-uP-yij"/>
                 <outlet property="favoriteButton" destination="HAf-aU-5YB" id="DaU-wy-i9W"/>
                 <outlet property="genreLabel" destination="a4k-jA-OVs" id="FlL-Cv-ntA"/>
+                <outlet property="gradientImage" destination="SeD-Se-mIJ" id="SYD-gS-M47"/>
                 <outlet property="overviewLabel" destination="naC-4Z-dYS" id="uOt-E3-2KC"/>
                 <outlet property="posterImage" destination="cGJ-1I-iZw" id="2jG-qR-t03"/>
                 <outlet property="scrollView" destination="x3x-kt-9zi" id="Den-Sv-8CL"/>
@@ -37,7 +38,7 @@
                                         <constraint firstAttribute="width" secondItem="cGJ-1I-iZw" secondAttribute="height" multiplier="334:517" id="Xc3-Cy-2jd"/>
                                     </constraints>
                                 </imageView>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_gradient" translatesAutoresizingMaskIntoConstraints="NO" id="SeD-Se-mIJ">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="563" translatesAutoresizingMaskIntoConstraints="NO" id="SeD-Se-mIJ">
                                     <rect key="frame" x="0.0" y="78" width="414" height="563"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now You See Me 2" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJu-Bj-0w4">
@@ -181,7 +182,6 @@
     <resources>
         <image name="btn_play" width="14" height="14"/>
         <image name="btn_plus" width="14" height="14"/>
-        <image name="img_gradient" width="375" height="563"/>
         <image name="minus" catalog="system" width="128" height="24"/>
     </resources>
 </document>

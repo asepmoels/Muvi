@@ -12,18 +12,31 @@ import SnapKit
 import RxCocoa
 import RxRelay
 import EmptyDataSet_Swift
+import Core
+import Movies
+
+typealias FavoritePresenterType = GetListPresenter<
+  String, Movie, Interactor<
+    String, [Movie], FavoriteMoviesRepository<
+      MoviesLocalDataSource
+    >
+  >
+>
 
 class FavoriteViewController: UIViewController {
   private let disposeBag = DisposeBag()
-  private let router: MovieRouter
-  private let presenter: FavoritePresenter
+  private let router: DetailMovieRouter
+  private let favoritePresenter: FavoritePresenterType
+  private let removeFavoritePresenter: RemoveFavoritePresenterType
   private let tableView = UITableView(frame: CGRect.zero)
   private let searchBar = SearchTextField()
 
-  init(router: MovieRouter,
-       presenter: FavoritePresenter) {
-    self.presenter = presenter
+  init(router: DetailMovieRouter,
+       favoritePresenter: FavoritePresenterType,
+       removeFavoritePresenter: RemoveFavoritePresenterType) {
+    self.favoritePresenter = favoritePresenter
     self.router = router
+    self.removeFavoritePresenter = removeFavoritePresenter
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -42,7 +55,7 @@ class FavoriteViewController: UIViewController {
 
     setupTheme()
     navigationItem.titleView = searchBar
-    presenter.getFavoriteMovies(keyword: searchBar.text ?? "")
+    favoritePresenter.getList(request: searchBar.text ?? "")
   }
 
   private func configureViews() {
@@ -68,7 +81,7 @@ class FavoriteViewController: UIViewController {
       .debounce(.milliseconds(1500), scheduler: MainScheduler.instance)
       .distinctUntilChanged()
       .subscribe { [weak self] (str) in
-        self?.presenter.getFavoriteMovies(keyword: str ?? "")
+        self?.favoritePresenter.getList(request: str ?? "")
       }.disposed(by: disposeBag)
 
     NotificationCenter.default.rx.notification(UIApplication.keyboardWillShowNotification)
@@ -94,21 +107,16 @@ class FavoriteViewController: UIViewController {
         })
       }).disposed(by: disposeBag)
 
-    presenter.isLoading.subscribe { (isLoading) in
-      isLoading ? SVProgressHUD.show() : SVProgressHUD.dismiss()
-    }.disposed(by: disposeBag)
+    favoritePresenter.list.subscribe(onNext: { [weak self] data in
+      self?.handleDataState(state: data, onLoaded: {
+        self?.tableView.reloadData()
+      })
+    }).disposed(by: disposeBag)
 
-    presenter.movies.subscribe { [weak self] _ in
-      self?.tableView.reloadData()
-    }.disposed(by: disposeBag)
-
-    presenter.movie.subscribe { [weak self] _ in
-      self?.presenter.getFavoriteMovies(keyword: self?.searchBar.text ?? "")
-    }.disposed(by: disposeBag)
-
-    presenter.error.subscribe(onNext: { [weak self] (error) in
-      guard let theError = error else { return }
-      self?.handleError(error: theError)
+    removeFavoritePresenter.item.subscribe(onNext: { [weak self] data in
+      if data.value != nil {
+        self?.favoritePresenter.getList(request: self?.searchBar.text ?? "")
+      }
     }).disposed(by: disposeBag)
   }
 
@@ -121,7 +129,7 @@ class FavoriteViewController: UIViewController {
     alert.addAction(UIAlertAction(title: "Yes, Remove",
                                   style: .destructive,
                                   handler: { [weak self] _ in
-                                    self?.presenter.removeFromFavorite(item: movie)
+                                    self?.removeFavoritePresenter.getItem(request: movie)
                                   }))
     present(alert, animated: true, completion: nil)
   }
@@ -129,12 +137,12 @@ class FavoriteViewController: UIViewController {
 
 extension FavoriteViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    presenter.movies.value?.count ?? 0
+    favoritePresenter.list.value.value?.count ?? 0
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: FavoriteMovieCell = tableView.dequeueReusableCell(for: indexPath)
-    cell.item = presenter.movies.value?[indexPath.row]
+    cell.item = favoritePresenter.list.value.value?[indexPath.row]
     cell.favButtonHandler = { [weak self] movie in
       self?.confirmRemoveFavorite(movie: movie)
     }
@@ -144,8 +152,8 @@ extension FavoriteViewController: UITableViewDataSource {
 
 extension FavoriteViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if let item = presenter.movies.value?[indexPath.row] {
-      router.routeToDetail(from: self, movie: item)
+    if let item = favoritePresenter.list.value.value?[indexPath.row] {
+      router.routeToDetailMovie(from: self, movie: item)
     }
   }
 }
@@ -176,7 +184,7 @@ extension FavoriteViewController: EmptyDataSetSource {
 
 extension FavoriteViewController: EmptyDataSetDelegate {
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
-    if let movies = presenter.movies.value,
+    if let movies = favoritePresenter.list.value.value,
        movies.count > 0 {
       return false
     }

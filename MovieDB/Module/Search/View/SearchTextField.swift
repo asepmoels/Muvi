@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Common
 
 class SearchTextField: UITextField {
   init() {

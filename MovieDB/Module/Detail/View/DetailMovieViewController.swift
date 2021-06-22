@@ -7,13 +7,39 @@
 
 import UIKit
 import RxSwift
-import SVProgressHUD
 import SDWebImage
+import Core
+import Movies
+
+typealias DetailMoviePresenterType = GetItemPresenter<
+  Int, Movie, Interactor<
+    Int, Movie, MovieRepository<
+      MovieRemoteDataSource, MoviesLocalDataSource
+    >
+  >
+>
+typealias AddFavoritePresenterType = GetItemPresenter<
+  Movie, Movie, Interactor<
+    Movie, Movie, AddFavoriteRepository<
+      MovieLocalDataSource
+    >
+  >
+>
+typealias RemoveFavoritePresenterType = GetItemPresenter<
+  Movie, Movie, Interactor<
+    Movie, Movie, RemoveFavoriteRepository<
+      MovieLocalDataSource
+    >
+  >
+>
 
 class DetailMovieViewController: UIViewController {
   private let disposeBag = DisposeBag()
-  private let presenter: DetailMoviePresenter
+  private let detailPresenter: DetailMoviePresenterType
+  private let addFavoritePresenter: AddFavoritePresenterType
+  private let removeFavoritePresenter: RemoveFavoritePresenterType
   private let router: DetailMovieRouter
+  var movieID: Int = 0
 
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var posterImage: UIImageView!
@@ -23,11 +49,16 @@ class DetailMovieViewController: UIViewController {
   @IBOutlet weak var favoriteButton: UIButton!
   @IBOutlet weak var trailerButton: UIButton!
   @IBOutlet weak var castsCollectionView: UICollectionView!
+  @IBOutlet weak var gradientImage: UIImageView!
 
   init(router: DetailMovieRouter,
-       presenter: DetailMoviePresenter) {
-    self.presenter = presenter
+       detailPresenter: DetailMoviePresenterType,
+       addFavoritePresenter: AddFavoritePresenterType,
+       removeFavoritePresenter: RemoveFavoritePresenterType) {
+    self.detailPresenter = detailPresenter
     self.router = router
+    self.addFavoritePresenter = addFavoritePresenter
+    self.removeFavoritePresenter = removeFavoritePresenter
     super.init(nibName: nil, bundle: nil)
     hidesBottomBarWhenPushed = true
   }
@@ -40,7 +71,7 @@ class DetailMovieViewController: UIViewController {
     super.viewDidLoad()
     configureViews()
     observePresenter()
-    presenter.getDetailMovie()
+    detailPresenter.getItem(request: movieID)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -64,29 +95,35 @@ class DetailMovieViewController: UIViewController {
     favoriteButton.titleLabel?.numberOfLines = 0
     favoriteButton.titleLabel?.textAlignment = .center
     castsCollectionView.register(cellType: CastCell.self)
+    gradientImage.image = .gradientImage
+    trailerButton.setImage(.playButton, for: .normal)
+    favoriteButton.setImage(.plusButton, for: .normal)
+    favoriteButton.setImage(UIImage(systemName: "minus"), for: .selected)
   }
 
   private func observePresenter() {
-    presenter.isLoading.subscribe { (isLoading) in
-      isLoading ? SVProgressHUD.show() : SVProgressHUD.dismiss()
+    detailPresenter.item.subscribe { [weak self] data in
+      self?.handleDataState(state: data, onLoaded: {
+        self?.updateContent()
+        self?.castsCollectionView.reloadData()
+      })
     }.disposed(by: disposeBag)
 
-    presenter.movie.subscribe { [weak self] _ in
-      self?.updateContent()
-    }.disposed(by: disposeBag)
+    addFavoritePresenter.item
+      .bind(to: detailPresenter.item)
+      .disposed(by: disposeBag)
 
-    presenter.error.subscribe(onNext: { [weak self] (error) in
-      guard let theError = error else { return }
-      self?.handleError(error: theError)
-    }).disposed(by: disposeBag)
+    removeFavoritePresenter.item
+      .bind(to: detailPresenter.item)
+      .disposed(by: disposeBag)
   }
 
   private func updateContent() {
-    let item = presenter.movie.value
+    let item = detailPresenter.item.value.value
     if !(item?.isFavorite ?? false),
        favoriteButton.isSelected {
       favoriteButton.isSelected = false
-      presenter.getDetailMovie()
+      detailPresenter.getItem(request: movieID)
       return
     }
     titleLabel.text = item?.title
@@ -101,7 +138,7 @@ class DetailMovieViewController: UIViewController {
       layout.minimumInteritemSpacing = 8
       layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     }
-    trailerButton.isHidden = presenter.trailer == nil
+    trailerButton.isHidden = trailer == nil
 
     if let overview = item?.overview {
       let paragraphStyle = NSMutableParagraphStyle()
@@ -114,16 +151,24 @@ class DetailMovieViewController: UIViewController {
     }
   }
 
+  var trailer: String? {
+    detailPresenter.item.value.value?
+      .videos?
+      .filter({ $0.type == "Trailer" && $0.site.lowercased() == "youtube" })
+      .first?.key
+  }
+
   @IBAction func favoriteButtonDidTapped(_ sender: UIButton) {
+    let movie = detailPresenter.item.value.value
     if sender.isSelected {
-      presenter.removeFromFavorite()
+      removeFavoritePresenter.getItem(request: movie)
     } else {
-      presenter.addToFavorite()
+      addFavoritePresenter.getItem(request: movie)
     }
   }
 
   @IBAction func watchButtonDidTapped(_ sender: Any) {
-    guard let videoKey = presenter.trailer else {
+    guard let videoKey = trailer else {
       return
     }
     router.routeToYoutubePlayer(from: self, videoId: videoKey)
@@ -132,12 +177,12 @@ class DetailMovieViewController: UIViewController {
 
 extension DetailMovieViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    presenter.movie.value?.casts?.count ?? 0
+    detailPresenter.item.value.value?.casts?.count ?? 0
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell: CastCell = collectionView.dequeueReusableCell(for: indexPath)
-    cell.item = presenter.movie.value?.casts?[indexPath.row]
+    cell.item = detailPresenter.item.value.value?.casts?[indexPath.row]
     return cell
   }
 }

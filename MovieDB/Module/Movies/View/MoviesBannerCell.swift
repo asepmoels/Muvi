@@ -7,6 +7,7 @@
 
 import Foundation
 import Reusable
+import Movies
 
 class MoviesBannerCell: UITableViewCell, Reusable {
   private let collectionView = UICollectionView(frame: CGRect.zero,

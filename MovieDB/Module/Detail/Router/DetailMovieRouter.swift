@@ -6,13 +6,13 @@
 //
 
 import UIKit
+import Movies
+import Core
 
 struct DetailMovieRouter {
   func routeToDetailMovie(from viewController: UIViewController, movie: Movie) {
-    let presenter: DetailMoviePresenter = Injection.shared.resolve()
-    presenter.movieId = "\(movie.identifier)"
-    let detail = DetailMovieViewController(router: Injection.shared.resolve(),
-                                           presenter: presenter)
+    let detail: DetailMovieViewController = Injection.shared.resolve()
+    detail.movieID = movie.identifier
     viewController.navigationController?.pushViewController(detail, animated: true)
   }
 

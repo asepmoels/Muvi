@@ -9,17 +9,35 @@ import UIKit
 import RxSwift
 import SVProgressHUD
 import SnapKit
+import Core
+import Movies
+
+enum HomeContent: String, CaseIterable {
+  case banner
+  case nowPlaying = "Now Playing"
+  case topRated = "Top Rated"
+  case popular = "Popular"
+  case upcoming = "Upcoming"
+}
+
+typealias MoviesPresenterType = GetGoupedListPresenter<
+  Int, Movie, Interactor<
+    Int, [Movie], MoviesByGroupRepository<
+      MoviesRemoteDataSource
+    >
+  >
+>
 
 class MoviesViewController: UIViewController {
   private let disposeBag = DisposeBag()
-  private let router: MovieRouter
-  private let presenter: MoviePresenter
+  private let router: DetailMovieRouter
+  private let presenters: [MoviesPresenterType]
   private let tableView = UITableView(frame: CGRect.zero, style: .grouped)
 
-  init(router: MovieRouter,
-       presenter: MoviePresenter) {
+  init(router: DetailMovieRouter,
+       presenters: [MoviesPresenterType]) {
     self.router = router
-    self.presenter = presenter
+    self.presenters = presenters
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -31,7 +49,7 @@ class MoviesViewController: UIViewController {
     super.viewDidLoad()
     configureViews()
     observePresenter()
-    presenter.getTrending()
+    presenters.first?.getList(request: nil)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -61,44 +79,22 @@ class MoviesViewController: UIViewController {
   }
 
   private func observePresenter() {
-    presenter.isLoading.subscribe { (isLoading) in
-      isLoading ? SVProgressHUD.show() : SVProgressHUD.dismiss()
-    }.disposed(by: disposeBag)
-
-    presenter.trendings.filter({ $0 != nil }).subscribe { [weak self] _ in
-      self?.tableView.reloadData()
-      self?.presenter.getNowPlaying()
-    }.disposed(by: disposeBag)
-
-    presenter.nowPlayings.filter({ $0 != nil }).subscribe { [weak self] _ in
-      self?.tableView.reloadData()
-      self?.presenter.getPopular()
-    }.disposed(by: disposeBag)
-
-    presenter.populars.filter({ $0 != nil }).subscribe { [weak self] _ in
-      self?.tableView.reloadData()
-      self?.presenter.getTopRated()
-    }.disposed(by: disposeBag)
-
-    presenter.topRateds.filter({ $0 != nil }).subscribe { [weak self] _ in
-      self?.tableView.reloadData()
-      self?.presenter.getUpcoming()
-    }.disposed(by: disposeBag)
-
-    presenter.upcomings.subscribe { [weak self] _ in
-      self?.tableView.reloadData()
-    }.disposed(by: disposeBag)
-
-    presenter.error.subscribe(onNext: { [weak self] (error) in
-      guard let theError = error else { return }
-      self?.handleError(error: theError)
-    }).disposed(by: disposeBag)
+    for index in 0..<HomeContent.allCases.count {
+      presenters[index].list.subscribe(onNext: { [weak self] data in
+        self?.handleDataState(state: data, onLoaded: {
+          self?.tableView.reloadData()
+          if index < HomeContent.allCases.count - 1 {
+            self?.presenters[1 + index].getList(request: nil)
+          }
+        })
+      }).disposed(by: disposeBag)
+    }
   }
 }
 
 extension MoviesViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    presenter.homeContents.count
+    HomeContent.allCases.count
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -106,32 +102,21 @@ extension MoviesViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if presenter.homeContents[indexPath.section] == .banner {
+    if HomeContent.allCases[indexPath.section] == .banner {
       let cell: MoviesBannerCell = tableView.dequeueReusableCell(for: indexPath)
-      cell.items = presenter.trendings.value
+      cell.items = presenters.first?.list.value.value
       cell.selectionHandler = { [weak self] movie in
         guard let self = self else { return }
-        self.router.routeToDetail(from: self, movie: movie)
+        self.router.routeToDetailMovie(from: self, movie: movie)
       }
       return cell
     }
 
     let cell: MovieListCell = tableView.dequeueReusableCell(for: indexPath)
-    switch presenter.homeContents[indexPath.section] {
-    case .nowPlaying:
-      cell.items = presenter.nowPlayings.value
-    case .popular:
-      cell.items = presenter.populars.value
-    case .topRated:
-      cell.items = presenter.topRateds.value
-    case .upcoming:
-      cell.items = presenter.upcomings.value
-    default:
-      break
-    }
+    cell.items = presenters[indexPath.section].list.value.value
     cell.selectionHandler = { [weak self] movie in
       guard let self = self else { return }
-      self.router.routeToDetail(from: self, movie: movie)
+      self.router.routeToDetailMovie(from: self, movie: movie)
     }
     return cell
   }
@@ -140,7 +125,7 @@ extension MoviesViewController: UITableViewDataSource {
 extension MoviesViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let header = tableView.dequeueReusableHeaderFooterView(MovieGenreHeaderView.self)
-    header?.titleLabel.text = presenter.homeContents[section].rawValue
+    header?.titleLabel.text = HomeContent.allCases[section].rawValue
     return header
   }
 

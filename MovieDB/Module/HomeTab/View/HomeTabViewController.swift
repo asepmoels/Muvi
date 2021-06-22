@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Common
 
 class HomeTabViewController: UITabBarController {
   private let router: HomeRouter

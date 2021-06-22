@@ -69,6 +69,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" red="0.1450980392" green="0.1529411765" blue="0.1647058824" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
+                <outlet property="favoriteButton" destination="IJE-e4-V9f" id="p86-ag-0z5"/>
                 <outlet property="genreLabel" destination="FiP-S1-djj" id="MyV-ju-fHl"/>
                 <outlet property="posterImageView" destination="ILf-96-XoV" id="P44-OV-HO1"/>
                 <outlet property="titleLabel" destination="fro-1a-s3r" id="AO8-iV-USF"/>

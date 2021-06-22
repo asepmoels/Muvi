@@ -8,6 +8,8 @@
 import UIKit
 import SDWebImage
 import Reusable
+import Movies
+import Common
 
 class FavoriteMovieCell: UITableViewCell, NibReusable {
   var item: Movie? {
@@ -21,9 +23,11 @@ class FavoriteMovieCell: UITableViewCell, NibReusable {
   @IBOutlet weak var genreLabel: UILabel!
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var yearLabel: UILabel!
+  @IBOutlet weak var favoriteButton: UIButton!
 
   override func awakeFromNib() {
     super.awakeFromNib()
+    favoriteButton.setImage(.favoriteButton, for: .normal)
   }
 
   private func setContent() {

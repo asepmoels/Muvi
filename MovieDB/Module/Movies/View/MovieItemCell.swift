@@ -8,6 +8,7 @@
 import UIKit
 import Reusable
 import SDWebImage
+import Movies
 
 class MovieItemCell: UICollectionViewCell, NibReusable {
   var item: Movie? {

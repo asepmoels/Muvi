@@ -8,6 +8,7 @@
 import UIKit
 import Reusable
 import SDWebImage
+import Movies
 
 class CastCell: UICollectionViewCell, Reusable {
   private let imageView = UIImageView(frame: .zero)

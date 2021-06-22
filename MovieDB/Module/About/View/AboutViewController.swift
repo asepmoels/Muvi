@@ -6,8 +6,12 @@
 //
 
 import UIKit
+import Common
 
 class AboutViewController: UIViewController {
+  @IBOutlet weak var logoImage: UIImageView!
+  @IBOutlet weak var fotoImage: UIImageView!
+
   init() {
     super.init(nibName: "AboutViewController", bundle: nil)
   }
@@ -18,7 +22,13 @@ class AboutViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    configureViews()
+  }
+
+  private func configureViews() {
     view.backgroundColor = .mainBarColor
+    logoImage.image = .navbarLogo
+    fotoImage.image = .aboutFoto
   }
 
   override func viewWillAppear(_ animated: Bool) {

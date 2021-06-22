@@ -7,6 +7,7 @@
 
 import UIKit
 import Reusable
+import Movies
 
 class MovieListCell: UITableViewCell, Reusable {
   private let collectionView = UICollectionView(frame: CGRect.zero,

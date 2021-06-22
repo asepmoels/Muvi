@@ -7,24 +7,34 @@
 
 import UIKit
 import RxSwift
-import SVProgressHUD
 import SnapKit
 import RxCocoa
 import RxRelay
 import EmptyDataSet_Swift
+import Core
+import Common
+import Movies
+
+typealias SearchPresenterType = GetListPresenter<
+  String, Movie, Interactor<
+    String, [Movie], MoviesRepository<
+      SearchMoviesRemoteDataSource
+    >
+  >
+>
 
 class SearchViewController: UIViewController {
   private let disposeBag = DisposeBag()
-  private let router: MovieRouter
-  private let presenter: SearchPresenter
+  private let router: DetailMovieRouter
+  private let presenter: SearchPresenterType
   private let collectionView = UICollectionView(frame: CGRect.zero,
                                                 collectionViewLayout: UICollectionViewFlowLayout())
   private let searchBar = SearchTextField()
 
-  init(router: MovieRouter,
-       presenter: SearchPresenter) {
-    self.presenter = presenter
+  init(router: DetailMovieRouter,
+       presenter: SearchPresenterType) {
     self.router = router
+    self.presenter = presenter
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -78,7 +88,7 @@ class SearchViewController: UIViewController {
       .debounce(.milliseconds(1500), scheduler: MainScheduler.instance)
       .distinctUntilChanged()
       .subscribe { [weak self] (str) in
-        self?.presenter.searchMovies(keyword: str ?? "")
+        self?.presenter.getList(request: str)
       }.disposed(by: disposeBag)
 
     NotificationCenter.default.rx.notification(UIApplication.keyboardWillShowNotification)
@@ -104,29 +114,22 @@ class SearchViewController: UIViewController {
         })
       }).disposed(by: disposeBag)
 
-    presenter.isLoading.subscribe { (isLoading) in
-      isLoading ? SVProgressHUD.show() : SVProgressHUD.dismiss()
-    }.disposed(by: disposeBag)
-
-    presenter.movies.subscribe { [weak self] _ in
-      self?.collectionView.reloadData()
-    }.disposed(by: disposeBag)
-
-    presenter.error.subscribe(onNext: { [weak self] (error) in
-      guard let theError = error else { return }
-      self?.handleError(error: theError)
+    presenter.list.subscribe(onNext: { [weak self] data in
+      self?.handleDataState(state: data, onLoaded: {
+        self?.collectionView.reloadData()
+      })
     }).disposed(by: disposeBag)
   }
 }
 
 extension SearchViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    presenter.movies.value?.count ?? 0
+    presenter.list.value.value?.count ?? 0
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell: MovieItemCell = collectionView.dequeueReusableCell(for: indexPath)
-    cell.item = presenter.movies.value?[indexPath.row]
+    cell.item = presenter.list.value.value?[indexPath.row]
     return cell
   }
 }
@@ -141,8 +144,8 @@ extension SearchViewController: UICollectionViewDelegate {
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    if let item = presenter.movies.value?[indexPath.row] {
-      router.routeToDetail(from: self, movie: item)
+    if let item = presenter.list.value.value?[indexPath.row] {
+      router.routeToDetailMovie(from: self, movie: item)
     }
   }
 }
@@ -173,7 +176,7 @@ extension SearchViewController: EmptyDataSetSource {
 
 extension SearchViewController: EmptyDataSetDelegate {
   func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
-    if let movies = presenter.movies.value,
+    if let movies = presenter.list.value.value,
        movies.count > 0 {
       return false
     }
