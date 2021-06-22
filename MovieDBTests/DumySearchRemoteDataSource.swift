@@ -10,6 +10,10 @@ import RxSwift
 @testable import Core
 @testable import Movies
 
+enum QueryError: Error {
+  case emptyQuery
+}
+
 struct DumySearchRemoteDataSource: DataSource {
   typealias Request = String
   typealias Response = [Movie]
@@ -20,18 +24,25 @@ struct DumySearchRemoteDataSource: DataSource {
 
   private func createDummyArrayResponse(query: String?) -> Observable<[Movie]> {
     let result = ReplaySubject<[MovieEntity]>.createUnbounded()
-    let objects = [
-      [
-        "id": 10,
-        "title": "Now You See Me"
-      ],
-      [
-        "id": 100,
-        "title": "Ironman 3"
+    if let keyword = query,
+       !keyword.isEmpty {
+      let objects = [
+        [
+          "id": 10,
+          "title": "Now You See Me"
+        ],
+        [
+          "id": 100,
+          "title": "Ironman 3"
+        ]
       ]
-    ].compactMap({ MovieEntity(JSON: $0) })
-    result.onNext(objects)
-    result.onCompleted()
+      .compactMap({ MovieEntity(JSON: $0) })
+      .filter({ $0.title.contains(keyword) })
+      result.onNext(objects)
+      result.onCompleted()
+    } else {
+      result.onError(QueryError.emptyQuery)
+    }
     return result.compactMap({ $0 })
   }
 }

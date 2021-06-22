@@ -67,5 +67,15 @@ class MovieDBTests: XCTestCase {
     let resultZero = try? streamZero.toBlocking().last()
 
     XCTAssert(resultZero?.count ?? 0 == 0, "Should be not found movie with title that include \(query)")
+
+    let streamError = useCase.execute(request: "")
+
+    XCTAssertThrowsError(try streamError.toBlocking().last()) { error in
+      guard let theError = error as? QueryError else {
+        XCTAssert(false)
+        return
+      }
+      XCTAssertEqual(theError, QueryError.emptyQuery)
+    }
   }
 }
