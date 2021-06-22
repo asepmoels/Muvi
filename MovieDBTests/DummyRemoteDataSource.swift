@@ -19,7 +19,11 @@ struct DummyRemoteDataSource: DataSource {
   typealias Response = [Movie]
 
   func execute(request: Int?) -> Observable<[Movie]> {
-    createDummyArrayResponse()
+    if request == 10 {
+      return createErrorResponse()
+    }
+
+    return createDummyArrayResponse()
   }
 
   private func createDummyArrayResponse() -> Observable<[Movie]> {
